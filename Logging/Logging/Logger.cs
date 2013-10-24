@@ -8,8 +8,9 @@ namespace Logging {
         Debug = 1,
         Info = 2,
         Warn = 3,
-        Error = 4,
-        Fatal = 5
+        Assert = 4,
+        Error = 5,
+        Fatal = 6
     }
 
     public class Logger {
@@ -22,6 +23,7 @@ namespace Logging {
             {LogLevel.Debug, "[DEBUG]"},
             {LogLevel.Info, "[INFO] "},
             {LogLevel.Warn, "[WARN] "},
+            {LogLevel.Assert, "[ASSERT] "},
             {LogLevel.Error, "[ERROR]"},
             {LogLevel.Fatal, "[FATAL]"}
         };
@@ -70,6 +72,10 @@ namespace Logging {
 
         public void Warn(string message) {
             log(LogLevel.Warn, message);
+        }
+
+        public void Assert(string message) {
+            log(LogLevel.Assert, message);
         }
 
         public void Error(string message) {
