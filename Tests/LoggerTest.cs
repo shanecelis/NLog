@@ -4,15 +4,15 @@ using Logging;
 [TestFixture]
 public class LoggerTest {
 
-[Test]
+    [Test]
     public void ManualTest() {
 
         var fileLogAppender = new FileLogAppender("Log.txt");
         fileLogAppender.useColorCodes = true;
         Logger.AddAppender(fileLogAppender.WriteToFile);
 
-        //Logger.Ignore(typeof(Test));
-        //Logger.Ignore("Ignore");
+        Logger.Ignore(typeof(LoggerTest));
+        Logger.Ignore("Ignore");
 
         var logger1 = Logger.GetLogger(typeof(LoggerTest));
         logger1.Debug("Debug");
@@ -29,6 +29,8 @@ public class LoggerTest {
         logger2.Assert("Assert");
         logger2.Error("Error");
         logger2.Fatal("Fatal");
+
+        new MyClass();
     }
 }
 
