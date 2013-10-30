@@ -6,15 +6,16 @@ using System.Collections.Generic;
 
 public class SOSMaxLog {
     private Socket _socket;
-    private DnsEndPoint _endPoint;
+    private IPEndPoint _endPoint;
     private Boolean _connected = false;
     private Boolean _connecting = false;
     private List<HistoryItem> _history = new List<HistoryItem>();
 
-    public void Connect(string host = "localhost", int port = 4444) {
-        _endPoint = new DnsEndPoint(host, port);
+    public void Connect(string host = "127.0.0.1", int port = 4444) {
+        _endPoint = new IPEndPoint(IPAddress.Parse(host), port);
         _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         _connecting = true;
+
 
         SocketAsyncEventArgs args = new SocketAsyncEventArgs();
         args.UserToken = _socket;
@@ -61,25 +62,25 @@ public class SOSMaxLog {
         Boolean isMultiLine = lines.Length > 1;
 
         return new StringBuilder("!SOS<")
+            .Append(commandType)
+                .Append(" key=\"")
+                .Append(level)
+                .Append("\">")
+                .Append(!isMultiLine ? replaceXmlSymbols(message) : logMessage(lines[0], message))
+                .Append("</")
                 .Append(commandType)
-                    .Append(" key=\"")
-                    .Append(level)
-                    .Append("\">")
-                    .Append(!isMultiLine ? replaceXmlSymbols(message) : logMessage(lines[0], message))
-                    .Append("</")
-                    .Append(commandType)
-                    .Append(">")
-                    .ToString();
+                .Append(">")
+                .ToString();
     }
 
     private string logMessage(string title, string log) {
         return new StringBuilder("<title>")
-                .Append(replaceXmlSymbols(title))
-                    .Append("</title>")
-                    .Append("<message>")
-                    .Append(replaceXmlSymbols(log.Substring(log.IndexOf('\n') + 1)))
-                    .Append("</message>")
-                    .ToString();
+            .Append(replaceXmlSymbols(title))
+                .Append("</title>")
+                .Append("<message>")
+                .Append(replaceXmlSymbols(log.Substring(log.IndexOf('\n') + 1)))
+                .Append("</message>")
+                .ToString();
     }
 
     private string replaceXmlSymbols(string str) {
@@ -114,18 +115,6 @@ public class SOSMaxLog {
         };
 
         _socket.SendAsync(args);
-    }
-
-    public string Host {
-        get {
-            return _endPoint.Host;
-        }
-    }
-
-    public int Port {
-        get {
-            return _endPoint.Port;
-        }
     }
 
     public Boolean IsConnected {
