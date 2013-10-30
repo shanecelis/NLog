@@ -1,35 +1,40 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Logging {
 
-    public enum LogLevel : int {
-        Debug = 1,
-        Info = 2,
-        Warn = 3,
-        Assert = 4,
-        Error = 5,
-        Fatal = 6
+    public enum LogLevel {
+        Debug   = 1 << 1,
+        Info    = 1 << 2,
+        Warn    = 1 << 3,
+        Error   = 1 << 4,
+        Fatal   = 1 << 5
     }
 
     public class Logger {
 
-        public delegate void Appender(LogLevel logLevel, string message);
+        public delegate void Appender(LogLevel logLevel,string message);
 
-        private static List<Appender> _appender = new List<Appender>();
+        private static Appender _appender;
         private static List<string> _ignore = new List<string>();
         private static Dictionary<LogLevel, string> _logLevelPrefixes = new Dictionary<LogLevel, string>() {
             {LogLevel.Debug, "[DEBUG]"},
             {LogLevel.Info, "[INFO] "},
             {LogLevel.Warn, "[WARN] "},
-            {LogLevel.Assert, "[ASSERT] "},
             {LogLevel.Error, "[ERROR]"},
             {LogLevel.Fatal, "[FATAL]"}
         };
 
         public static void AddAppender(Appender appender) {
-            _appender.Add(appender);
+            if (_appender == null)
+                _appender = appender;
+            else
+                _appender += appender;
+        }
+
+        public static void RemoveAppender(Appender appender) {
+            if (_appender != null)
+                _appender -= appender;
         }
 
         public static Logger GetLogger(Type type) {
@@ -57,8 +62,12 @@ namespace Logging {
         private void log(LogLevel logLevel, string message) {
             if (!_ignore.Contains(_name)) {
                 var time = String.Format("{0:hh/mm/ss/fff}", DateTime.Now);
-                foreach (var appender in _appender)
-                    appender(logLevel, time + " " + _logLevelPrefixes[logLevel] + " " + _name + ": " + message);
+                string logMessage = String.Format("{0} {1} {2}: {3}",
+                                                  time,
+                                                  _logLevelPrefixes[logLevel],
+                                                  _name,
+                                                  message);
+                _appender(logLevel, logMessage);
             }
         }
 
@@ -72,10 +81,6 @@ namespace Logging {
 
         public void Warn(string message) {
             log(LogLevel.Warn, message);
-        }
-
-        public void Assert(string message) {
-            log(LogLevel.Assert, message);
         }
 
         public void Error(string message) {

@@ -1,12 +1,13 @@
-using System.Collections.Generic;
-using System.IO;
-
 // <summary>
 // ANSI COLOR escape codes for colors and other things. 
 // You can change the color of foreground and background plus bold, italic, underline etc
 // 
 // For a complete list see http://en.wikipedia.org/wiki/ANSI_escape_code#Colors
 // </summary>
+
+using System.Collections.Generic;
+using System.IO;
+
 namespace Logging {
     public class FileLogAppender {
         public bool useColorCodes = false;
@@ -25,7 +26,6 @@ namespace Logging {
             { LogLevel.Debug, _blue },
             { LogLevel.Info, _green },
             { LogLevel.Warn, _orange },
-            { LogLevel.Assert, _red },
             { LogLevel.Error, _red },
             { LogLevel.Fatal, _magenta }
         };

@@ -1,10 +1,17 @@
 using System;
-using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class SOSMaxLog {
+
+    public const string DEBUG = "DEBUG";
+    public const string INFO = "INFO";
+    public const string WARN = "WARN";
+    public const string ERROR = "ERROR";
+    public const string FATAL = "FATAL";
+
     private Socket _socket;
     private IPEndPoint _endPoint;
     private Boolean _connected = false;
@@ -16,7 +23,6 @@ public class SOSMaxLog {
         _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         _connecting = true;
 
-
         SocketAsyncEventArgs args = new SocketAsyncEventArgs();
         args.UserToken = _socket;
         args.RemoteEndPoint = _endPoint;
@@ -27,9 +33,8 @@ public class SOSMaxLog {
             if (!_connected) {
                 Console.WriteLine("Socket Connect Error: {0}", e.SocketError);
             } else {
-                foreach (HistoryItem item in _history) {
-                    Log(item.Log, item.Level);
-                }
+                foreach (HistoryItem item in _history)
+                    Log(item.message, item.logLevel);
 
                 _history.Clear();
             }
@@ -39,71 +44,58 @@ public class SOSMaxLog {
     }
 
     public void Disconnect() {
-        if (_socket != null) {
+        if (_socket != null)
             _socket.Close();
-        }
     }
 
-    public void Log(string message, string level = "DEBUG") {
+    public void Log(string message, string logLevel = "DEBUG") {
         if (!IsConnected) {
-            if (_connecting) {
-                _history.Add(new HistoryItem(message, level));
-            }
+            if (_connecting)
+                _history.Add(new HistoryItem(message, logLevel));
 
             return;
         }
 
-        send(serialize(formatLogMessage(message, level)));
+        send(serialize(formatLogMessage(message, logLevel)));
     }
 
-    private string formatLogMessage(string message, string level) {
+    private string formatLogMessage(string message, string logLevel) {
         string[] lines = message.Split('\n');
         string commandType = lines.Length == 1 ? "showMessage" : "showFoldMessage";
-        Boolean isMultiLine = lines.Length > 1;
+        bool isMultiLine = lines.Length > 1;
 
-        return new StringBuilder("!SOS<")
-            .Append(commandType)
-                .Append(" key=\"")
-                .Append(level)
-                .Append("\">")
-                .Append(!isMultiLine ? replaceXmlSymbols(message) : logMessage(lines[0], message))
-                .Append("</")
-                .Append(commandType)
-                .Append(">")
-                .ToString();
+        return String.Format("!SOS<{0} key=\"{1}\">{2}</{0}>",
+                             commandType,
+                             logLevel,
+                             !isMultiLine ? replaceXmlSymbols(message) : multilineMessage(lines[0], message));
     }
 
-    private string logMessage(string title, string log) {
-        return new StringBuilder("<title>")
-            .Append(replaceXmlSymbols(title))
-                .Append("</title>")
-                .Append("<message>")
-                .Append(replaceXmlSymbols(log.Substring(log.IndexOf('\n') + 1)))
-                .Append("</message>")
-                .ToString();
+    private string multilineMessage(string title, string message) {
+        return String.Format("<title>{0}</title><message>{1}</message>",
+                             replaceXmlSymbols(title),
+                             replaceXmlSymbols(message.Substring(message.IndexOf('\n') + 1)));
     }
 
     private string replaceXmlSymbols(string str) {
-        return str.Replace("<", "&lt;").Replace(">", "&gt;");
+        return str.Replace("<", "&lt;")
+            .Replace(">", "&gt;")
+            .Replace("&lt;", "<![CDATA[<]]>")
+            .Replace("&gt;", "<![CDATA[>]]>")
+            .Replace("&", "<![CDATA[&]]>");
     }
 
     private byte[] serialize(string message) {
         char[] msgString = message.ToCharArray();
         byte[] byteArray = new byte[message.Length + 1];
-
-        for (int i = 0; i < msgString.Length; ++i) {
+        for (int i = 0; i < msgString.Length; ++i)
             byteArray[i] = (byte)msgString[i];
-        }
-
         // Must terminate with a null byte!
         byteArray[message.Length] = 0;
-
         return byteArray;
     }
 
     private void send(byte[] buffer) {
         SocketAsyncEventArgs args = new SocketAsyncEventArgs();
-        //args.SocketClientAccessPolicyProtocol = SocketClientAccessPolicyProtocol.Tcp;
         args.SetBuffer(buffer, 0, buffer.Length);
         args.UserToken = _socket;
         args.RemoteEndPoint = _endPoint;
@@ -118,28 +110,16 @@ public class SOSMaxLog {
     }
 
     public Boolean IsConnected {
-        get {
-            return _socket != null && _socket.Connected;
-        }
+        get { return _socket != null && _socket.Connected; }
     }
 
-    private class HistoryItem {
-        private string _name;
-        private string _level;
+    private struct HistoryItem {
+        public string message;
+        public string logLevel;
 
-        public HistoryItem(string log, string level) {
-            this.Log = log;
-            this.Level = level;
-        }
-
-        public string Log {
-            get { return _name; }
-            set { _name = value; }
-        }
-
-        public string Level {
-            get { return _level; }
-            set { _level = value; }
+        public HistoryItem(string message, string logLevel) {
+            this.message = message;
+            this.logLevel = logLevel;
         }
     }
 }
