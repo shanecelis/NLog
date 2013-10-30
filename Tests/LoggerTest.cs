@@ -11,6 +11,11 @@ public class LoggerTest {
         fileLogAppender.useColorCodes = true;
         Logger.AddAppender(fileLogAppender.WriteToFile);
 
+        var sosLog = new SOSMaxLog();
+        sosLog.Connect();
+        Logger.AddAppender((logLevel, message) => sosLog.Log(message, logLevel.ToString()));
+
+
         Logger.Ignore(typeof(LoggerTest));
         Logger.Ignore("Ignore");
 
@@ -31,6 +36,14 @@ public class LoggerTest {
         logger2.Fatal("Fatal");
 
         new MyClass();
+
+
+        sosLog.Log("Hello", "DEBUG");
+        sosLog.Log("Hello", "INFO");
+        sosLog.Log("Hello", "WARN");
+        sosLog.Log("Hello", "ERROR");
+        sosLog.Log("Hello", "FATAL");
+        sosLog.Log("Hello\nMultiline");
     }
 }
 

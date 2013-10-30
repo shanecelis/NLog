@@ -39,5 +39,6 @@
   <ItemGroup>
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\Appender\FileLogAppender.cs" />
+    <Compile Include="Logging\Appender\SOSMaxLog.cs" />
   </ItemGroup>
 </Project>

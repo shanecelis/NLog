@@ -8,7 +8,7 @@ public class MyClass {
     public MyClass() {
         _log.Debug("My class");
 
-        var success = doSth("aInvalidKey");    
+        var success = doSth("aKey");    
     
         if (success) {
             _log.Info("Success");
