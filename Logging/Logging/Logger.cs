@@ -13,7 +13,7 @@ namespace Logging {
 
     public class Logger {
 
-        public delegate void Appender(LogLevel logLevel,string message);
+        public delegate void Appender(string message, LogLevel logLevel);
 
         private static Appender _appender;
         private static List<string> _ignore = new List<string>();
@@ -59,7 +59,7 @@ namespace Logging {
             _name = name;
         }
 
-        private void log(LogLevel logLevel, string message) {
+        private void log(string message, LogLevel logLevel) {
             if (!_ignore.Contains(_name)) {
                 var time = String.Format("{0:hh/mm/ss/fff}", DateTime.Now);
                 string logMessage = String.Format("{0} {1} {2}: {3}",
@@ -67,28 +67,28 @@ namespace Logging {
                                                   _logLevelPrefixes[logLevel],
                                                   _name,
                                                   message);
-                _appender(logLevel, logMessage);
+                _appender(logMessage, logLevel);
             }
         }
 
         public void Debug(string message) {
-            log(LogLevel.Debug, message);
+            log(message, LogLevel.Debug);
         }
 
         public void Info(string message) {
-            log(LogLevel.Info, message);
+            log(message, LogLevel.Info);
         }
 
         public void Warn(string message) {
-            log(LogLevel.Warn, message);
+            log(message, LogLevel.Warn);
         }
 
         public void Error(string message) {
-            log(LogLevel.Error, message);
+            log(message, LogLevel.Error);
         }
 
         public void Fatal(string message) {
-            log(LogLevel.Fatal, message);
+            log(message, LogLevel.Fatal);
         }
     }
 }

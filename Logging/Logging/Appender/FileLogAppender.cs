@@ -12,6 +12,8 @@ namespace Logging {
     public class FileLogAppender {
         public bool useColorCodes = false;
 
+        private object _lock = new object();
+
         private string _filePath;
         private static string _reset = "\x1B[0m";
         private static string _black = "\x1B[30m";
@@ -34,9 +36,19 @@ namespace Logging {
             _filePath = filePath;
         }
 
-        public void WriteToFile(LogLevel logLevel, string message) {
-            using (StreamWriter writer = new StreamWriter(_filePath, true)) {
-                writer.WriteLine(useColorCodes ? _colorLookup[logLevel] + message + _reset : message);
+        public void WriteToFile(string message, LogLevel logLevel = LogLevel.Debug) {
+            lock (_lock) {
+                using (StreamWriter writer = new StreamWriter(_filePath, true)) {
+                    writer.WriteLine(useColorCodes ? _colorLookup[logLevel] + message + _reset : message);
+                }
+            }
+        }
+
+        public void ClearFile() {
+            lock (_lock) {
+                using (StreamWriter writer = new StreamWriter(_filePath, false)) {
+                    writer.Write("");
+                }
             }
         }
     }

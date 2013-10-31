@@ -2,15 +2,9 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Collections.Generic;
-using System.Diagnostics;
+using Logging;
 
 public class SOSMaxLog {
-
-    public const string DEBUG = "DEBUG";
-    public const string INFO = "INFO";
-    public const string WARN = "WARN";
-    public const string ERROR = "ERROR";
-    public const string FATAL = "FATAL";
 
     private Socket _socket;
     private IPEndPoint _endPoint;
@@ -48,7 +42,7 @@ public class SOSMaxLog {
             _socket.Close();
     }
 
-    public void Log(string message, string logLevel = "DEBUG") {
+    public void Log(string message, LogLevel logLevel = LogLevel.Debug) {
         if (!IsConnected) {
             if (_connecting)
                 _history.Add(new HistoryItem(message, logLevel));
@@ -56,7 +50,7 @@ public class SOSMaxLog {
             return;
         }
 
-        send(serialize(formatLogMessage(message, logLevel)));
+        send(serialize(formatLogMessage(message, logLevel.ToString())));
     }
 
     private string formatLogMessage(string message, string logLevel) {
@@ -115,9 +109,9 @@ public class SOSMaxLog {
 
     private struct HistoryItem {
         public string message;
-        public string logLevel;
+        public LogLevel logLevel;
 
-        public HistoryItem(string message, string logLevel) {
+        public HistoryItem(string message, LogLevel logLevel) {
             this.message = message;
             this.logLevel = logLevel;
         }
