@@ -14,27 +14,36 @@ public class SOSMaxLog {
 
     public void Connect(string host = "127.0.0.1", int port = 4444) {
         _endPoint = new IPEndPoint(IPAddress.Parse(host), port);
-        _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        _connecting = true;
+    }
 
-        SocketAsyncEventArgs args = new SocketAsyncEventArgs();
-        args.UserToken = _socket;
-        args.RemoteEndPoint = _endPoint;
-        args.Completed += (s, e) => {
-            _connected = (e.SocketError == SocketError.Success);
-            _connecting = false;
+    public void Reconnect() {
+        connect();
+    }
 
-            if (!_connected) {
-                Console.WriteLine("Socket Connect Error: {0}", e.SocketError);
-            } else {
-                foreach (HistoryItem item in _history)
-                    Log(item.message, item.logLevel);
+    private void connect() {
+        if (!_connecting && !_connected) {
+            _connecting = true;
+            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-                _history.Clear();
-            }
-        };
+            SocketAsyncEventArgs args = new SocketAsyncEventArgs();
+            args.UserToken = _socket;
+            args.RemoteEndPoint = _endPoint;
+            args.Completed += (s, e) => {
+                _connected = (e.SocketError == SocketError.Success);
+                _connecting = false;
 
-        _socket.ConnectAsync(args);
+                if (!_connected) {
+                    Console.WriteLine("Socket Connect Error: {0}", e.SocketError);
+                } else {
+                    foreach (HistoryItem item in _history)
+                        Log(item.message, item.logLevel);
+
+                    _history.Clear();
+                }
+            };
+
+            _socket.ConnectAsync(args);
+        }
     }
 
     public void Disconnect() {
