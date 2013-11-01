@@ -1,7 +1,7 @@
 using NUnit.Framework;
-using Logging;
 using System;
 using System.Threading;
+using NLog;
 
 [TestFixture]
 public class LoggerTest {
@@ -14,7 +14,7 @@ public class LoggerTest {
         fileLogAppender.useColorCodes = true;
         Logger.AddAppender(fileLogAppender.WriteToFile);
 
-        var sosLog = new SOSMaxLog();
+        var sosLog = new SOSMaxAppender();
         sosLog.Connect();
         Logger.AddAppender(sosLog.Log);
 
@@ -65,14 +65,14 @@ public class LoggerTest {
     }
 
     private void logThread1() {
-        var logger = Logger.GetLogger("logger1");
+        var logger = Logger.GetLogger("Logger1");
         for (int i = 0; i < 10; i++) {
             logger.Debug("Message " + i);
         }
     }
 
     private void logThread2() {
-        var logger = Logger.GetLogger("logger2");
+        var logger = Logger.GetLogger("Logger2");
         for (int i = 0; i < 10; i++) {
             logger.Info("Message " + i);
         }

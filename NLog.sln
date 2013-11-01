@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logging", "Logging\Logging.csproj", "{B3398605-77E5-4532-8C8F-C90643E6BB7E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLog", "NLog\NLog.csproj", "{B3398605-77E5-4532-8C8F-C90643E6BB7E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{67D8E04D-A671-417C-B4E5-1A2116D923AD}"
 EndProject
@@ -21,7 +21,7 @@ Global
 		{B3398605-77E5-4532-8C8F-C90643E6BB7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Logging\Logging.csproj
+		StartupItem = NLog\NLog.csproj
 		Policies = $0
 		$0.DotNetNamingPolicy = $1
 		$1.DirectoryNamespaceAssociation = None
@@ -56,7 +56,7 @@ Global
 		$4.inheritsScope = text/plain
 		$4.scope = text/plain
 		$0.StandardHeader = $5
-		$5.Text = 
+		$5.Text =
 		$5.IncludeInNewFiles = True
 		$0.NameConventionPolicy = $6
 		$6.Rules = $7

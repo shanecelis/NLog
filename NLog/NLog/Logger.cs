@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Logging {
-
+namespace NLog {
     public enum LogLevel {
         Debug   = 1 << 1,
         Info    = 1 << 2,

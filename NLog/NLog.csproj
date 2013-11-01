@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B3398605-77E5-4532-8C8F-C90643E6BB7E}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Logging</RootNamespace>
-    <AssemblyName>Logging</AssemblyName>
+    <RootNamespace>NLog</RootNamespace>
+    <AssemblyName>NLog</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,12 +33,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Folder Include="Logging\" />
-    <Folder Include="Logging\Appender\" />
+    <Folder Include="NLog\" />
+    <Folder Include="NLog\Appender\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Logging\Logger.cs" />
-    <Compile Include="Logging\Appender\FileLogAppender.cs" />
-    <Compile Include="Logging\Appender\SOSMaxLog.cs" />
+    <Compile Include="NLog\Appender\FileLogAppender.cs" />
+    <Compile Include="NLog\Logger.cs" />
+    <Compile Include="NLog\Appender\SOSMaxAppender.cs" />
   </ItemGroup>
 </Project>

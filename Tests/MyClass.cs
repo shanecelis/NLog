@@ -1,5 +1,5 @@
 using System;
-using Logging;
+using NLog;
 
 public class MyClass {
 
