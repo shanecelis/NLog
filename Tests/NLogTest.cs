@@ -1,81 +1,89 @@
 using NUnit.Framework;
 using System;
-using System.Threading;
 using NLog;
 
 [TestFixture]
 public class LoggerTest {
 
+    [SetUp]
+    public void BeforeEach() {
+        Logger.RemoveAllAppender();
+    }
+
+    private void fail() {
+        Assert.IsTrue(false);
+    }
+
     [Test]
-    public void ManualTest() {
-
-        var fileLogAppender = new FileLogAppender("Log.txt");
-        fileLogAppender.ClearFile();
-        fileLogAppender.useColorCodes = true;
-        Logger.AddAppender(fileLogAppender.WriteToFile);
-
-        var sosLog = new SOSMaxAppender();
-        sosLog.Connect();
-        Logger.AddAppender(sosLog.Log);
-
-        Logger.AddAppender(someAppender);
-        Logger.RemoveAppender(someAppender);
-
-//        Logger.Ignore(typeof(LoggerTest));
-//        Logger.Ignore("Ignore");
-
-        var logger1 = Logger.GetLogger(typeof(LoggerTest));
-        logger1.Debug("Debug");
-        logger1.Info("Info");
-        logger1.Warn("Warn");
-        logger1.Error("Error");
-        logger1.Fatal("Fatal");
-
-        var logger2 = Logger.GetLogger("Ignore");
-        logger2.Debug("Debug");
-        logger2.Info("Info");
-        logger2.Warn("Warn");
-        logger2.Error("Error");
-        logger2.Fatal("Fatal");
-
-        new MyClass();
-
-        sosLog.Log("Hello", LogLevel.Debug);
-        sosLog.Log("Hello", LogLevel.Info );
-        sosLog.Log("Hello", LogLevel.Warn );
-        sosLog.Log("Hello", LogLevel.Error);
-        sosLog.Log("Hello", LogLevel.Fatal);
-        sosLog.Log("Hello\nMultiline1\nMultiline2");
-
-        var specialMessage = "07/48/27/288 [WARN]  NUdpKit.UdpClient: System.Threading.ThreadAbortException: Thread was being aborted\n  at <0x00000> <unknown method>\n  at (wrapper managed-to-native) System.Net.Sockets.Socket:RecvFrom_internal (intptr,byte[],int,int,System.Net.Sockets.SocketFlags,System.Net.SocketAddress&,int&)\n  at System.Net.Sockets.Socket.ReceiveFrom_nochecks_exc (System.Byte[] buf, Int32 offset, Int32 size, SocketFlags flags, System.Net.EndPoint& remote_end, Boolean throwOnError, System.Int32& error) [0x00000] in <filename unknown>:0\n  at System.Net.Sockets.Socket.ReceiveFrom_nochecks (System.Byte[] buf, Int32 offset, Int32 size, SocketFlags flags, System.Net.EndPoint& remote_end) [0x00000] in <filename unknown>:0\n  at System.Net.Sockets.Socket.ReceiveFrom (System.Byte[] buffer, System.Net.EndPoint& remoteEP) [0x00000] in <filename unknown>:0\n  at System.Net.Sockets.UdpClient.Receive (System.Net.IPEndPoint& remoteEP) [0x00000] in <filename unknown>:0\n  at NUdpKit.UdpClient.receiveData () [0x00000] in /Users/sschmid/Work/Wooga/Dev/Unity/Projects/MultiRacer/Assets/Source/Libraries/NUdpKit/UdpClient.cs:72";
-        sosLog.Log(specialMessage, LogLevel.Warn);
-
-        var thread1 = new Thread(new ThreadStart(logThread1));
-        var thread2 = new Thread(new ThreadStart(logThread2));
-        thread1.Start();
-        thread2.Start();
-
-        Thread.Sleep(1000);
-
-        logger1.Info("Done");
+    public void WorksWithoutAppender() {
+        TestHelper.LogAllLogLevels(Logger.GetLogger("NoAppender"));
     }
 
-    private void someAppender(string message, LogLevel logLevel) {
-        Console.WriteLine("No no no");
+    [Test]
+    public void AddsAppender() {
+        var message = "42";
+        var logMessage = "";
+        Logger.AddAppender((msg, logLevel) => logMessage = msg);
+        Logger.GetLogger("AddsAppender").Debug(message);
+        Assert.AreNotEqual("", logMessage);
     }
 
-    private void logThread1() {
-        var logger = Logger.GetLogger("Logger1");
-        for (int i = 0; i < 10; i++) {
-            logger.Debug("Message " + i);
-        }
+    [Test]
+    public void AddsMultipleAppender() {
+        var message = "42";
+        var logMessage1 = "";
+        var logMessage2 = "";
+        Logger.AddAppender((msg, logLevel) => logMessage1 = msg);
+        Logger.AddAppender((msg, logLevel) => logMessage2 = msg);
+        Logger.GetLogger("AddsMultipleAppender").Debug(message);
+        Assert.AreNotEqual("", logMessage1);
+        Assert.AreNotEqual("", logMessage2);
     }
 
-    private void logThread2() {
-        var logger = Logger.GetLogger("Logger2");
-        for (int i = 0; i < 10; i++) {
-            logger.Info("Message " + i);
-        }
+    [Test]
+    public void RemovesAppender() {
+        Logger.Appender appender = (msg, logLevel) => fail();
+        Logger.AddAppender(appender);
+        Logger.RemoveAppender(appender);
+        Logger.GetLogger("RemovesAppender").Debug("42");
+    }
+
+    [Test]
+    public void RemovesMultipleAppender() {
+        Logger.Appender appender1 = (msg, logLevel) => fail();
+        Logger.Appender appender2 = (msg, logLevel) => fail();
+        Logger.AddAppender(appender1);
+        Logger.AddAppender(appender2);
+        Logger.RemoveAppender(appender1);
+        Logger.RemoveAppender(appender2);
+        Logger.GetLogger("RemovesMultipleAppender").Debug("42");
+    }
+
+    [Test]
+    public void RemovesAllAppender() {
+        Logger.Appender appender1 = (msg, logLevel) => fail();
+        Logger.Appender appender2 = (msg, logLevel) => fail();
+        Logger.AddAppender(appender1);
+        Logger.AddAppender(appender2);
+        Logger.RemoveAllAppender();
+        Logger.GetLogger("RemovesAllAppender").Debug("42");
+    }
+
+    [Test]
+    public void IgnoresLoggerOfType() {
+        Logger.AddAppender((message, logLevel) => fail());
+        var type = typeof(LoggerTest);
+        var logger = Logger.GetLogger(type);
+        Logger.Ignore(type);
+        TestHelper.LogAllLogLevels(logger);
+    }
+    
+    [Test]
+    public void IgnoresLoggerWithName() {
+        Logger.AddAppender((message, logLevel) => fail());
+        var name = "MyLogger";
+        var logger = Logger.GetLogger(name);
+        Logger.Ignore(name);
+        TestHelper.LogAllLogLevels(logger);
     }
 }
-

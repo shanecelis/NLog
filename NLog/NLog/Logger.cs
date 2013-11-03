@@ -25,15 +25,15 @@ namespace NLog {
         };
 
         public static void AddAppender(Appender appender) {
-            if (_appender == null)
-                _appender = appender;
-            else
-                _appender += appender;
+            _appender += appender;
         }
 
         public static void RemoveAppender(Appender appender) {
-            if (_appender != null)
-                _appender -= appender;
+            _appender -= appender;
+        }
+
+        public static void RemoveAllAppender() {
+            _appender = null;
         }
 
         public static Logger GetLogger(Type type) {
@@ -52,6 +52,8 @@ namespace NLog {
             _ignore.Add(ignore);
         }
 
+        public string Name { get { return _name; } }
+
         private string _name;
 
         public Logger(string name) {
@@ -59,7 +61,7 @@ namespace NLog {
         }
 
         private void log(string message, LogLevel logLevel) {
-            if (!_ignore.Contains(_name)) {
+            if (_appender != null && !_ignore.Contains(_name)) {
                 var time = String.Format("{0:hh/mm/ss/fff}", DateTime.Now);
                 string logMessage = String.Format("{0} {1} {2}: {3}",
                                                   time,

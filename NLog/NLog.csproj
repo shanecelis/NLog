@@ -40,5 +40,6 @@
     <Compile Include="NLog\Appender\FileLogAppender.cs" />
     <Compile Include="NLog\Logger.cs" />
     <Compile Include="NLog\Appender\SOSMaxAppender.cs" />
+    <Compile Include="NLog\Log.cs" />
   </ItemGroup>
 </Project>
