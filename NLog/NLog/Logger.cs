@@ -62,7 +62,7 @@ namespace NLog {
 
         private void log(string message, LogLevel logLevel) {
             if (_appender != null && !_ignore.Contains(_name)) {
-                var time = String.Format("{0:hh/mm/ss/fff}", DateTime.Now);
+                var time = String.Format("{0:hh:mm:ss:fff}", DateTime.Now);
                 string logMessage = String.Format("{0} {1} {2}: {3}",
                                                   time,
                                                   _logLevelPrefixes[logLevel],

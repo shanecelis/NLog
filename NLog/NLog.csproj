@@ -35,11 +35,15 @@
   <ItemGroup>
     <Folder Include="NLog\" />
     <Folder Include="NLog\Appender\" />
+    <Folder Include="NLog\Formatter\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NLog\Appender\FileLogAppender.cs" />
     <Compile Include="NLog\Logger.cs" />
     <Compile Include="NLog\Appender\SOSMaxAppender.cs" />
     <Compile Include="NLog\Log.cs" />
+    <Compile Include="NLog\Appender\SocketAppender.cs" />
+    <Compile Include="NLog\Formatter\ColorCodeFormatter.cs" />
+    <Compile Include="NLog\Appender\SocketAppenderBase.cs" />
   </ItemGroup>
 </Project>

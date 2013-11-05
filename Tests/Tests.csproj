@@ -41,6 +41,7 @@
     <Compile Include="SOSMaxAppenderTest.cs" />
     <Compile Include="FileLogAppenderTest.cs" />
     <Compile Include="TestHelper.cs" />
+    <Compile Include="SocketAppenderTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

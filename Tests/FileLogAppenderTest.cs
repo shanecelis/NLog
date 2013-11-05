@@ -7,10 +7,10 @@ public class FileLogAppenderTest {
 
     [SetUp]
     public void BeforeEach() {
-        var fileLogAppender = new FileLogAppender("Log.txt");
+        Logger.RemoveAllAppender();
+        var fileLogAppender = new FileLogAppender("Log.txt", true);
         fileLogAppender.ClearFile();
-        fileLogAppender.useColorCodes = true;
-        Logger.AddAppender(fileLogAppender.WriteToFile);
+        Logger.AddAppender(fileLogAppender.WriteLine);
     }
 
     [Test]

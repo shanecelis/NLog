@@ -6,6 +6,7 @@ using System;
 public class LogTest {
     [Test]
     public void Logs() {
+        Logger.RemoveAllAppender();
         Logger.AddAppender((message, logLevel) => Console.WriteLine(message));
         Log.Debug("Debug");
         Log.Info("Info");
