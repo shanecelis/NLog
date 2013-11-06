@@ -2,7 +2,7 @@ using NUnit.Framework;
 using NLog;
 using System;
 
-// cat - | nc -l -p 4444
+// while :; do nc -l -p 4444; done
 
 [TestFixture]
 public class SocketAppenderTest {
