@@ -9,8 +9,15 @@ public class FileLogAppenderTest {
     public void BeforeEach() {
         Logger.RemoveAllAppender();
         var fileLogAppender = new FileLogAppender("Log.txt", true);
-        fileLogAppender.ClearFile();
+        //fileLogAppender.ClearFile();
         Logger.AddAppender(fileLogAppender.WriteLine);
+    }
+
+    [Test]
+    public void AllColors() {
+        var fileLogAppender = new FileLogAppender("Log.txt", false);
+        fileLogAppender.ClearFile();
+        fileLogAppender.WriteLine(ColorCodeFormatter.AllFormats("All colors"));
     }
 
     [Test]
