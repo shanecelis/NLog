@@ -12,7 +12,8 @@ namespace NLog {
     public static class ColorCodeFormatter {
         private static readonly string _reset   = "0m";
         private static readonly string _esc     = "\x1B[";
-        private static readonly string _format  = _esc + "{0}" + _esc + "{1}" + "{2}" + _esc + _reset; // 0: background_color, 1: forground_color, 2: message
+        // 0: background_color, 1: forground_color, 2: message
+        private static readonly string _format  = _esc + "{0}" + _esc + "{1}" + "{2}" + _esc + _reset;
         // Foreground colors
         private static readonly string _fg_black   = "30m";
         private static readonly string _fg_red     = "31m";
@@ -52,30 +53,6 @@ namespace NLog {
 
         public static string FormatMessage(string message, LogLevel logLevel) {
             return String.Format(_format, _backgroundColors[logLevel], _foregroundColors[logLevel], message);
-        }
-
-        public static string AllFormats(string message) {
-            var allFormats = "";
-            // foregrounds
-            allFormats += String.Format(_format, _bg_none, _fg_black, message) + "\n";
-            allFormats += String.Format(_format, _bg_none, _fg_red, message) + "\n";
-            allFormats += String.Format(_format, _bg_none, _fg_green, message) + "\n";
-            allFormats += String.Format(_format, _bg_none, _fg_yellow, message) + "\n";
-            allFormats += String.Format(_format, _bg_none, _fg_blue, message) + "\n";
-            allFormats += String.Format(_format, _bg_none, _fg_magenta, message) + "\n";
-            allFormats += String.Format(_format, _bg_none, _fg_cyan, message) + "\n";
-            allFormats += String.Format(_format, _bg_none, _fg_white, message) + "\n";
-            // backgrounds
-            allFormats += String.Format(_format, _bg_none, _fg_white, message) + "\n";
-            allFormats += String.Format(_format, _bg_black, _fg_white, message) + "\n";
-            allFormats += String.Format(_format, _bg_red, _fg_white, message) + "\n";
-            allFormats += String.Format(_format, _bg_green, _fg_white, message) + "\n";
-            allFormats += String.Format(_format, _bg_yellow, _fg_white, message) + "\n";
-            allFormats += String.Format(_format, _bg_blue, _fg_white, message) + "\n";
-            allFormats += String.Format(_format, _bg_magenta, _fg_white, message) + "\n";
-            allFormats += String.Format(_format, _bg_cyan, _fg_white, message) + "\n";
-            allFormats += String.Format(_format, _bg_white, _fg_white, message) + "\n";
-            return allFormats;
         }
     }
 }

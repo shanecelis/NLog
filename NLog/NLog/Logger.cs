@@ -11,17 +11,16 @@ namespace NLog {
     }
 
     public class Logger {
-
         public delegate void Appender(string message, LogLevel logLevel);
 
         private static Appender _appender;
         private static List<string> _ignore = new List<string>();
         private static Dictionary<LogLevel, string> _logLevelPrefixes = new Dictionary<LogLevel, string>() {
-            {LogLevel.Debug, "[DEBUG]"},
-            {LogLevel.Info, "[INFO] "},
-            {LogLevel.Warn, "[WARN] "},
-            {LogLevel.Error, "[ERROR]"},
-            {LogLevel.Fatal, "[FATAL]"}
+            { LogLevel.Debug, "[DEBUG]" },
+            { LogLevel.Info, "[INFO] " },
+            { LogLevel.Warn, "[WARN] " },
+            { LogLevel.Error, "[ERROR]" },
+            { LogLevel.Fatal, "[FATAL]" }
         };
 
         public static void AddAppender(Appender appender) {
@@ -64,10 +63,10 @@ namespace NLog {
             if (_appender != null && !_ignore.Contains(_name)) {
                 var time = String.Format("{0:hh:mm:ss:fff}", DateTime.Now);
                 string logMessage = String.Format("{0} {1} {2}: {3}",
-                                                  time,
-                                                  _logLevelPrefixes[logLevel],
-                                                  _name,
-                                                  message);
+                                                    _logLevelPrefixes[logLevel],
+                                                    time,
+                                                    _name,
+                                                    message);
                 _appender(logMessage, logLevel);
             }
         }

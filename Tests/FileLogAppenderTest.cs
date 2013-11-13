@@ -14,13 +14,6 @@ public class FileLogAppenderTest {
     }
 
     [Test]
-    public void AllColors() {
-        var fileLogAppender = new FileLogAppender("Log.txt", false);
-        fileLogAppender.ClearFile();
-        fileLogAppender.WriteLine(ColorCodeFormatter.AllFormats("All colors"));
-    }
-
-    [Test]
     public void FileLogAppender() {
         TestHelper.LogAllLogLevels(Logger.GetLogger("FileLogAppender"));
     }

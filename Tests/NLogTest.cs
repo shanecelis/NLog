@@ -3,7 +3,7 @@ using System;
 using NLog;
 
 [TestFixture]
-public class LoggerTest {
+public class NLogTest {
 
     [SetUp]
     public void BeforeEach() {
@@ -72,7 +72,7 @@ public class LoggerTest {
     [Test]
     public void IgnoresLoggerOfType() {
         Logger.AddAppender((message, logLevel) => fail());
-        var type = typeof(LoggerTest);
+        var type = typeof(NLogTest);
         var logger = Logger.GetLogger(type);
         Logger.Ignore(type);
         TestHelper.LogAllLogLevels(logger);

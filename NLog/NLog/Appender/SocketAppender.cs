@@ -14,7 +14,7 @@ namespace NLog {
             message += "\n";
             char[] msgString = message.ToCharArray();
             byte[] byteArray = new byte[message.Length];
-            for (int i = 0; i < msgString.Length; ++i)
+            for (int i = 0; i < msgString.Length; i++)
                 byteArray[i] = (byte)msgString[i];
             return byteArray;
         }

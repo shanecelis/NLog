@@ -4,13 +4,10 @@ namespace NLog {
     public class SOSMaxAppender : SocketAppenderBase {
 
         protected override byte[] SerializeMessage(string message, LogLevel logLevel) {
-            return serialize(formatLogMessage(message, logLevel.ToString()));
-        }
-
-        private byte[] serialize(string message) {
+            message = formatLogMessage(message, logLevel.ToString());
             char[] msgString = message.ToCharArray();
             byte[] byteArray = new byte[message.Length + 1];
-            for (int i = 0; i < msgString.Length; ++i)
+            for (int i = 0; i < msgString.Length; i++)
                 byteArray[i] = (byte)msgString[i];
             // Must terminate with a null byte!
             byteArray[message.Length] = 0;
