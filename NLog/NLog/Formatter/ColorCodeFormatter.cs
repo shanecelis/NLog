@@ -36,6 +36,7 @@ namespace NLog {
 
 
         private static readonly Dictionary<LogLevel, string> _foregroundColors = new Dictionary<LogLevel, string>() {
+            { LogLevel.Trace, _fg_white },
             { LogLevel.Debug, _fg_blue },
             { LogLevel.Info, _fg_green },
             { LogLevel.Warn, _fg_yellow },
@@ -44,6 +45,7 @@ namespace NLog {
         };
 
         private static readonly Dictionary<LogLevel, string> _backgroundColors = new Dictionary<LogLevel, string>() {
+            { LogLevel.Trace, _bg_cyan },
             { LogLevel.Debug, _bg_none },
             { LogLevel.Info, _bg_none },
             { LogLevel.Warn, _bg_none },

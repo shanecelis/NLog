@@ -7,6 +7,10 @@ namespace NLog {
             _log = Logger.GetLogger("Log");
         }
 
+        public static void Trace(string message) {
+            _log.Trace(message);
+        }
+
         public static void Debug(string message) {
             _log.Debug(message);
         }

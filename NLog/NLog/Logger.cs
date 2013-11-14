@@ -3,11 +3,12 @@ using System.Collections.Generic;
 
 namespace NLog {
     public enum LogLevel {
-        Debug   = 1 << 1,
-        Info    = 1 << 2,
-        Warn    = 1 << 3,
-        Error   = 1 << 4,
-        Fatal   = 1 << 5
+        Trace   = 1 << 1,
+        Debug   = 1 << 2,
+        Info    = 1 << 3,
+        Warn    = 1 << 4,
+        Error   = 1 << 5,
+        Fatal   = 1 << 6
     }
 
     public class Logger {
@@ -16,6 +17,7 @@ namespace NLog {
         private static Appender _appender;
         private static List<string> _ignore = new List<string>();
         private static Dictionary<LogLevel, string> _logLevelPrefixes = new Dictionary<LogLevel, string>() {
+            { LogLevel.Trace, "[TRACE]" },
             { LogLevel.Debug, "[DEBUG]" },
             { LogLevel.Info, "[INFO] " },
             { LogLevel.Warn, "[WARN] " },
@@ -69,6 +71,10 @@ namespace NLog {
                                                     message);
                 _appender(logMessage, logLevel);
             }
+        }
+
+        public void Trace(string message) {
+            log(message, LogLevel.Trace);
         }
 
         public void Debug(string message) {
