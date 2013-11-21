@@ -2,10 +2,9 @@ using System.IO;
 
 namespace NLog {
     public class FileLogAppender {
-
-        private object _lock = new object();
-        private string _filePath;
-        private  bool _useColorCodes;
+        object _lock = new object();
+        string _filePath;
+        bool _useColorCodes;
 
         public FileLogAppender(string filePath, bool useColorCodes = false) {
             _filePath = filePath;

@@ -3,24 +3,24 @@ using System.Collections.Generic;
 
 namespace NLog {
     public enum LogLevel {
-        Trace   = 1 << 1,
-        Debug   = 1 << 2,
-        Info    = 1 << 3,
-        Warn    = 1 << 4,
-        Error   = 1 << 5,
-        Fatal   = 1 << 6
+        Trace = 1 << 1,
+        Debug = 1 << 2,
+        Info  = 1 << 3,
+        Warn  = 1 << 4,
+        Error = 1 << 5,
+        Fatal = 1 << 6
     }
 
     public class Logger {
         public delegate void Appender(string message, LogLevel logLevel);
 
-        private static Appender _appender;
-        private static List<string> _ignore = new List<string>();
-        private static Dictionary<LogLevel, string> _logLevelPrefixes = new Dictionary<LogLevel, string>() {
+        static Appender _appender;
+        static List<string> _ignore = new List<string>();
+        static Dictionary<LogLevel, string> _logLevelPrefixes = new Dictionary<LogLevel, string>() {
             { LogLevel.Trace, "[TRACE]" },
             { LogLevel.Debug, "[DEBUG]" },
-            { LogLevel.Info, "[INFO] " },
-            { LogLevel.Warn, "[WARN] " },
+            { LogLevel.Info,  "[INFO] " },
+            { LogLevel.Warn,  "[WARN] " },
             { LogLevel.Error, "[ERROR]" },
             { LogLevel.Fatal, "[FATAL]" }
         };
@@ -55,20 +55,20 @@ namespace NLog {
 
         public string Name { get { return _name; } }
 
-        private string _name;
+        string _name;
 
         public Logger(string name) {
             _name = name;
         }
 
-        private void log(string message, LogLevel logLevel) {
+        void log(string message, LogLevel logLevel) {
             if (_appender != null && !_ignore.Contains(_name)) {
                 var time = String.Format("{0:hh:mm:ss:fff}", DateTime.Now);
                 string logMessage = String.Format("{0} {1} {2}: {3}",
-                                                    _logLevelPrefixes[logLevel],
-                                                    time,
-                                                    _name,
-                                                    message);
+                                        _logLevelPrefixes[logLevel],
+                                        time,
+                                        _name,
+                                        message);
                 _appender(logMessage, logLevel);
             }
         }

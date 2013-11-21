@@ -1,7 +1,7 @@
 namespace NLog {
     public static class Log {
 
-        private static Logger _log;
+        static Logger _log;
 
         static Log() {
             _log = Logger.GetLogger("Log");

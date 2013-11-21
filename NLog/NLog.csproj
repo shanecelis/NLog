@@ -30,12 +30,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="Communico">
+      <HintPath>Libraries\Communico.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="NLog\" />
     <Folder Include="NLog\Appender\" />
     <Folder Include="NLog\Formatter\" />
+    <Folder Include="Libraries\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NLog\Appender\FileLogAppender.cs" />
@@ -45,5 +49,8 @@
     <Compile Include="NLog\Appender\SocketAppender.cs" />
     <Compile Include="NLog\Formatter\ColorCodeFormatter.cs" />
     <Compile Include="NLog\Appender\SocketAppenderBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Libraries\Communico.dll" />
   </ItemGroup>
 </Project>

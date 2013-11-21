@@ -1,7 +1,6 @@
 namespace NLog {
     public class SocketAppender : SocketAppenderBase {
-
-        private bool _useColorCodes;
+        bool _useColorCodes;
 
         public SocketAppender(bool useColorCodes = false) {
             _useColorCodes = useColorCodes;
