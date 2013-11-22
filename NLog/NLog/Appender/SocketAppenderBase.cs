@@ -13,6 +13,12 @@ namespace NLog {
             _socket.NewConnection(ip, port);
         }
 
+        public void Listen(int port, int backlog = 100) {
+            _socket = new TcpSocket();
+            _socket.OnConnect += onConnected;
+            _socket.Listen(port, backlog);
+        }
+
         public void Disconnect() {
             _socket.Disconnect();
         }
@@ -25,9 +31,11 @@ namespace NLog {
         }
 
         void onConnected(object sender, EventArgs e) {
+            Send("SocketAppenderBase: Flush history - - - - - - - - - - - - - - - - - - - -", LogLevel.Debug);
             foreach (HistoryItem item in _history)
                 Send(item.message, item.logLevel);
 
+            Send("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -", LogLevel.Debug);
             _history.Clear();
         }
 

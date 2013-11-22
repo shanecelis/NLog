@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace NLog {
     public class SocketAppender : SocketAppenderBase {
         bool _useColorCodes;
@@ -10,12 +12,7 @@ namespace NLog {
             if (_useColorCodes)
                 message = ColorCodeFormatter.FormatMessage(message, logLevel);
 
-            message += "\n";
-            char[] msgString = message.ToCharArray();
-            byte[] byteArray = new byte[message.Length];
-            for (int i = 0; i < msgString.Length; i++)
-                byteArray[i] = (byte)msgString[i];
-            return byteArray;
+            return Encoding.ASCII.GetBytes(message + "\n");
         }
     }
 }
