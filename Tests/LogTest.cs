@@ -6,8 +6,8 @@ using System;
 public class LogTest {
     [Test]
     public void Logs() {
-        Logger.RemoveAllAppender();
-        Logger.AddAppender((message, logLevel) => Console.WriteLine(message));
+        LoggerFactory.RemoveAllAppender();
+        LoggerFactory.AddAppender((message, logLevel) => Console.WriteLine(message));
         Log.Debug("Debug");
         Log.Info("Info");
         Log.Warn("Warn");

@@ -4,27 +4,26 @@ using NLog;
 
 [TestFixture]
 public class NLogTest {
-
     [SetUp]
     public void BeforeEach() {
-        Logger.RemoveAllAppender();
+        LoggerFactory.RemoveAllAppender();
     }
 
-    private void fail() {
+    void fail() {
         Assert.IsTrue(false);
     }
 
     [Test]
     public void WorksWithoutAppender() {
-        TestHelper.LogAllLogLevels(Logger.GetLogger("NoAppender"));
+        TestHelper.LogAllLogLevels(LoggerFactory.GetLogger("NoAppender"));
     }
 
     [Test]
     public void AddsAppender() {
         var message = "42";
         var logMessage = "";
-        Logger.AddAppender((msg, logLevel) => logMessage = msg);
-        Logger.GetLogger("AddsAppender").Debug(message);
+        LoggerFactory.AddAppender((msg, logLevel) => logMessage = msg);
+        LoggerFactory.GetLogger("AddsAppender").Debug(message);
         Assert.AreNotEqual("", logMessage);
     }
 
@@ -33,9 +32,9 @@ public class NLogTest {
         var message = "42";
         var logMessage1 = "";
         var logMessage2 = "";
-        Logger.AddAppender((msg, logLevel) => logMessage1 = msg);
-        Logger.AddAppender((msg, logLevel) => logMessage2 = msg);
-        Logger.GetLogger("AddsMultipleAppender").Debug(message);
+        LoggerFactory.AddAppender((msg, logLevel) => logMessage1 = msg);
+        LoggerFactory.AddAppender((msg, logLevel) => logMessage2 = msg);
+        LoggerFactory.GetLogger("AddsMultipleAppender").Debug(message);
         Assert.AreNotEqual("", logMessage1);
         Assert.AreNotEqual("", logMessage2);
     }
@@ -43,47 +42,39 @@ public class NLogTest {
     [Test]
     public void RemovesAppender() {
         Logger.Appender appender = (msg, logLevel) => fail();
-        Logger.AddAppender(appender);
-        Logger.RemoveAppender(appender);
-        Logger.GetLogger("RemovesAppender").Debug("42");
+                    LoggerFactory.AddAppender(appender);
+        LoggerFactory.RemoveAppender(appender);
+        LoggerFactory.GetLogger("RemovesAppender").Debug("42");
     }
 
     [Test]
     public void RemovesMultipleAppender() {
         Logger.Appender appender1 = (msg, logLevel) => fail();
         Logger.Appender appender2 = (msg, logLevel) => fail();
-        Logger.AddAppender(appender1);
-        Logger.AddAppender(appender2);
-        Logger.RemoveAppender(appender1);
-        Logger.RemoveAppender(appender2);
-        Logger.GetLogger("RemovesMultipleAppender").Debug("42");
+        LoggerFactory.AddAppender(appender1);
+        LoggerFactory.AddAppender(appender2);
+        LoggerFactory.RemoveAppender(appender1);
+        LoggerFactory.RemoveAppender(appender2);
+        LoggerFactory.GetLogger("RemovesMultipleAppender").Debug("42");
     }
 
     [Test]
     public void RemovesAllAppender() {
         Logger.Appender appender1 = (msg, logLevel) => fail();
         Logger.Appender appender2 = (msg, logLevel) => fail();
-        Logger.AddAppender(appender1);
-        Logger.AddAppender(appender2);
-        Logger.RemoveAllAppender();
-        Logger.GetLogger("RemovesAllAppender").Debug("42");
+        LoggerFactory.AddAppender(appender1);
+        LoggerFactory.AddAppender(appender2);
+        LoggerFactory.RemoveAllAppender();
+        LoggerFactory.GetLogger("RemovesAllAppender").Debug("42");
     }
 
     [Test]
-    public void IgnoresLoggerOfType() {
-        Logger.AddAppender((message, logLevel) => fail());
-        var type = typeof(NLogTest);
-        var logger = Logger.GetLogger(type);
-        Logger.Ignore(type);
-        TestHelper.LogAllLogLevels(logger);
-    }
-    
-    [Test]
-    public void IgnoresLoggerWithName() {
-        Logger.AddAppender((message, logLevel) => fail());
-        var name = "MyLogger";
-        var logger = Logger.GetLogger(name);
-        Logger.Ignore(name);
-        TestHelper.LogAllLogLevels(logger);
+    public void SetsGlobalMinLogLevel() {
+        var message = "42";
+        var logMessage = "";
+        LoggerFactory.globalMinLogLevel = LogLevel.Info;
+        LoggerFactory.AddAppender((msg, logLevel) => logMessage = msg);
+        LoggerFactory.GetLogger("AddsAppender").Debug(message);
+        Assert.AreEqual("", logMessage);
     }
 }

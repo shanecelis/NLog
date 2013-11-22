@@ -1,11 +1,6 @@
 namespace NLog {
     public static class Log {
-
-        static Logger _log;
-
-        static Log() {
-            _log = Logger.GetLogger("Log");
-        }
+        static readonly Logger _log = LoggerFactory.GetLogger("Log");
 
         public static void Trace(string message) {
             _log.Trace(message);

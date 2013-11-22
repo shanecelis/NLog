@@ -4,18 +4,17 @@ using System.Threading;
 
 [TestFixture]
 public class FileLogAppenderTest {
-
     [SetUp]
     public void BeforeEach() {
-        Logger.RemoveAllAppender();
+        LoggerFactory.RemoveAllAppender();
         var fileLogAppender = new FileLogAppender("Log.txt", true);
         //fileLogAppender.ClearFile();
-        Logger.AddAppender(fileLogAppender.WriteLine);
+        LoggerFactory.AddAppender(fileLogAppender.WriteLine);
     }
 
     [Test]
     public void FileLogAppender() {
-        TestHelper.LogAllLogLevels(Logger.GetLogger("FileLogAppender"));
+        TestHelper.LogAllLogLevels(LoggerFactory.GetLogger("FileLogAppender"));
     }
 
     [Test]
@@ -29,15 +28,15 @@ public class FileLogAppenderTest {
         Log.Debug("Done");
     }
 
-    private void logThread1() {
-        var logger = Logger.GetLogger("Logger1");
+    void logThread1() {
+        var logger = LoggerFactory.GetLogger("Logger1");
         for (int i = 0; i < 10; i++) {
             logger.Debug("Message " + i);
         }
     }
 
-    private void logThread2() {
-        var logger = Logger.GetLogger("Logger2");
+    void logThread2() {
+        var logger = LoggerFactory.GetLogger("Logger2");
         for (int i = 0; i < 10; i++) {
             logger.Info("Message " + i);
         }

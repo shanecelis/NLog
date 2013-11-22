@@ -17,12 +17,12 @@ public class SocketAppenderTest {
 
     [Test]
     public void Test() {
-        Logger.RemoveAllAppender();
+        LoggerFactory.RemoveAllAppender();
         var s = new SocketAppender(true);
         s.Connect();
-        Logger.AddAppender(s.Send);
-        Logger.AddAppender((message, logLevel) => Console.WriteLine(message));
-        TestHelper.LogAllLogLevels(Logger.GetLogger("SocketAppender"));
+        LoggerFactory.AddAppender(s.Send);
+        LoggerFactory.AddAppender((message, logLevel) => Console.WriteLine(message));
+        TestHelper.LogAllLogLevels(LoggerFactory.GetLogger("SocketAppender"));
     }
 }
 

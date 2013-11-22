@@ -5,12 +5,12 @@ using Communico;
 namespace NLog {
     public abstract class SocketAppenderBase {
         TcpSocket _socket;
-        List<HistoryItem> _history = new List<HistoryItem>();
+        readonly List<HistoryItem> _history = new List<HistoryItem>();
 
         public void Connect(string ip = "127.0.0.1", int port = 4444) {
             _socket = new TcpSocket();
             _socket.OnConnect += onConnected;
-            _socket.NewConnection(ip, port);
+            _socket.Connect(ip, port);
         }
 
         public void Listen(int port, int backlog = 100) {
@@ -23,8 +23,8 @@ namespace NLog {
             _socket.Disconnect();
         }
 
-        public void Send(string message, LogLevel logLevel = LogLevel.Debug) {
-            if (_socket.connected)
+        public void Send(string message, LogLevel logLevel) {
+            if (_socket != null && _socket.connected)
                 _socket.Send(SerializeMessage(message, logLevel));
             else
                 _history.Add(new HistoryItem(message, logLevel));

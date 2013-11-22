@@ -3,7 +3,7 @@ using NLog;
 
 public class MyClass {
 
-    private static Logger _log = Logger.GetLogger(typeof(MyClass));
+    static readonly Logger _log = LoggerFactory.GetLogger(typeof(MyClass));
 
     public MyClass() {
         _log.Debug("My class");
@@ -17,7 +17,7 @@ public class MyClass {
         }
     }
 
-    private bool doSth(string key) {
+    bool doSth(string key) {
         if (key != "aKey") {
             _log.Error("Invalid key");
             return false;

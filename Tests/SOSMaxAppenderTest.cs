@@ -3,19 +3,19 @@ using NLog;
 
 [TestFixture]
 public class SOSMaxAppenderTest {
-    private SOSMaxAppender _sosLog;
+    SOSMaxAppender _sosLog;
 
     [SetUp]
     public void BeforeEach() {
-        Logger.RemoveAllAppender();
+        LoggerFactory.RemoveAllAppender();
         _sosLog = new SOSMaxAppender();
         _sosLog.Connect();
-        Logger.AddAppender(_sosLog.Send);
+        LoggerFactory.AddAppender(_sosLog.Send);
     }
 
     [Test]
     public void SOSMaxAppender() {
-        TestHelper.LogAllLogLevels(Logger.GetLogger("SOSMaxAppender"));
+        TestHelper.LogAllLogLevels(LoggerFactory.GetLogger("SOSMaxAppender"));
     }
 
     [Test]

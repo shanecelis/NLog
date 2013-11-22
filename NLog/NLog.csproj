@@ -41,7 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NLog\Appender\FileLogAppender.cs" />
-    <Compile Include="NLog\Logger.cs" />
     <Compile Include="NLog\Appender\SOSMaxAppender.cs" />
     <Compile Include="NLog\Log.cs" />
     <Compile Include="NLog\Appender\SocketAppender.cs" />
@@ -53,5 +52,7 @@
     <Compile Include="..\..\Communico\Communico\Communico\TcpSocketEventArgs.cs">
       <Link>Libraries\Communico\TcpSocketEventArgs.cs</Link>
     </Compile>
+    <Compile Include="NLog\LoggerFactory.cs" />
+    <Compile Include="NLog\Logger.cs" />
   </ItemGroup>
 </Project>
