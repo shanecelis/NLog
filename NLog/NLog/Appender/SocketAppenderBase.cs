@@ -31,12 +31,14 @@ namespace NLog {
         }
 
         void onConnected(object sender, EventArgs e) {
-            Send("SocketAppenderBase: Flush history - - - - - - - - - - - - - - - - - - - -", LogLevel.Debug);
-            foreach (HistoryItem item in _history)
-                Send(item.message, item.logLevel);
+            if (_history.Count > 0) {
+                Send("SocketAppenderBase: Flush history - - - - - - - - - - - - - - - - - - - -", LogLevel.Debug);
+                foreach (HistoryItem item in _history)
+                    Send(item.message, item.logLevel);
 
-            Send("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -", LogLevel.Debug);
-            _history.Clear();
+                Send("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -", LogLevel.Debug);
+                _history.Clear();
+            }
         }
 
         protected abstract byte[] SerializeMessage(string message, LogLevel logLevel);

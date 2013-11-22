@@ -8,18 +8,18 @@ namespace Example {
             LoggerFactory.globalMinLogLevel = LogLevel.On;
             LoggerFactory.AddAppender((message, logLevel) => Console.WriteLine(ColorCodeFormatter.FormatMessage(message, logLevel)));
 
-            // Connect
-            // $ telnet 127.0.0.1 1235
-            var listener = new SocketAppender(true);
-            LoggerFactory.AddAppender(listener.Send);
-
             // Listen (requires netcat)
             // $ nc -lvvp 1234
             var sender = new SocketAppender(true);
             LoggerFactory.AddAppender(sender.Send);
 
-            listener.Listen(1235);
+            // Connect
+            // $ telnet 127.0.0.1 1235
+            var listener = new SocketAppender(true);
+            LoggerFactory.AddAppender(listener.Send);
+
             sender.Connect("127.0.0.1", 1234);
+            listener.Listen(1235);
 
             var l = LoggerFactory.GetLogger("TestLogger", LogLevel.Info);
             l.Debug("You should not see me...");
