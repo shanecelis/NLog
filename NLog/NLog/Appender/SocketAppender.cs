@@ -4,11 +4,11 @@ namespace NLog {
     public class SocketAppender : SocketAppenderBase {
         readonly bool _useColorCodes;
 
-        public SocketAppender(bool useColorCodes = false) {
+        public SocketAppender(bool useColorCodes) {
             _useColorCodes = useColorCodes;
         }
 
-        protected override byte[] SerializeMessage(string message, LogLevel logLevel) {
+        protected override byte[] serializeMessage(string message, LogLevel logLevel) {
             if (_useColorCodes)
                 message = ColorCodeFormatter.FormatMessage(message, logLevel);
 

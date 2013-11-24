@@ -37,7 +37,7 @@
     <Folder Include="NLog\Appender\" />
     <Folder Include="NLog\Formatter\" />
     <Folder Include="Libraries\" />
-    <Folder Include="Libraries\Communico\" />
+    <Folder Include="Libraries\Gabble\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NLog\Appender\FileLogAppender.cs" />
@@ -46,13 +46,13 @@
     <Compile Include="NLog\Appender\SocketAppender.cs" />
     <Compile Include="NLog\Formatter\ColorCodeFormatter.cs" />
     <Compile Include="NLog\Appender\SocketAppenderBase.cs" />
-    <Compile Include="..\..\Communico\Communico\Communico\TcpSocket.cs">
-      <Link>Libraries\Communico\TcpSocket.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Communico\Communico\Communico\TcpSocketEventArgs.cs">
-      <Link>Libraries\Communico\TcpSocketEventArgs.cs</Link>
-    </Compile>
     <Compile Include="NLog\LoggerFactory.cs" />
     <Compile Include="NLog\Logger.cs" />
+    <Compile Include="..\..\Gabble\Gabble\Gabble\TcpSocket.cs">
+      <Link>Libraries\Gabble\TcpSocket.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gabble\Gabble\Gabble\TcpSocketEventArgs.cs">
+      <Link>Libraries\Gabble\TcpSocketEventArgs.cs</Link>
+    </Compile>
   </ItemGroup>
 </Project>

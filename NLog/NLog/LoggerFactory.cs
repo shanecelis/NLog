@@ -6,11 +6,11 @@ namespace NLog {
 
         static Logger.Appender _appender;
 
-        public static Logger GetLogger(Type type, LogLevel loglevel = LogLevel.Trace) {
+        public static Logger GetLogger(Type type, LogLevel loglevel = LogLevel.On) {
             return GetLogger(type.ToString(), loglevel);
         }
 
-        public static Logger GetLogger(string name, LogLevel loglevel = LogLevel.Trace) {
+        public static Logger GetLogger(string name, LogLevel loglevel = LogLevel.On) {
             var logger = new Logger(name, globalMinLogLevel > loglevel ? globalMinLogLevel : loglevel);
             logger.appender = _appender;
             return logger;

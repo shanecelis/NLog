@@ -1,23 +1,26 @@
 using System;
 using System.Collections.Generic;
 using Gabble;
+using System.Net;
 
 namespace NLog {
     public abstract class SocketAppenderBase {
-        public TcpSocket socket { get; private set; }
+        public AbstractTcpSocket socket { get; private set; }
 
         readonly List<HistoryItem> _history = new List<HistoryItem>();
 
-        public void Connect(string ip = "127.0.0.1", int port = 4444) {
-            socket = new TcpSocket();
-            socket.OnConnect += onConnected;
-            socket.Connect(ip, port);
+        public void Connect(IPAddress ip, int port) {
+            var client = new TcpClientSocket();
+            client.OnConnect += onConnected;
+            client.Connect(ip, port);
+            socket = client;
         }
 
-        public void Listen(int port, int backlog = 100) {
-            socket = new TcpSocket();
-            socket.OnConnect += onConnected;
-            socket.Listen(port, backlog);
+        public void Listen(int port) {
+            var server = new TcpServerSocket();
+            server.OnClientConnect += onConnected;
+            server.Listen(port);
+            socket = server;
         }
 
         public void Disconnect() {
@@ -25,10 +28,16 @@ namespace NLog {
         }
 
         public void Send(string message, LogLevel logLevel) {
-            if (socket != null && socket.connected)
-                socket.Send(SerializeMessage(message, logLevel));
+            if (isSocketReady())
+                socket.Send(serializeMessage(message, logLevel));
             else
                 _history.Add(new HistoryItem(message, logLevel));
+        }
+
+        bool isSocketReady() {
+            return socket != null &&
+            (socket is TcpClientSocket && socket.isConnected) ||
+            (socket is TcpServerSocket && ((TcpServerSocket)socket).connectedClients > 0);
         }
 
         void onConnected(object sender, EventArgs e) {
@@ -42,7 +51,7 @@ namespace NLog {
             }
         }
 
-        protected abstract byte[] SerializeMessage(string message, LogLevel logLevel);
+        protected abstract byte[] serializeMessage(string message, LogLevel logLevel);
 
         struct HistoryItem {
             public string message;
