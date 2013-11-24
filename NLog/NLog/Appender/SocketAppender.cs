@@ -12,7 +12,7 @@ namespace NLog {
             if (_useColorCodes)
                 message = ColorCodeFormatter.FormatMessage(message, logLevel);
 
-            return Encoding.ASCII.GetBytes(message + "\n");
+            return Encoding.UTF8.GetBytes(message + "\n");
         }
     }
 }

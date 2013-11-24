@@ -134,9 +134,9 @@ Global
 		$16.IncludeInstanceMembers = True
 		$16.IncludeStaticEntities = True
 		$7.NamingRule = $18
-		$18.Name = Methods
+		$18.Name = Methods (public)
 		$18.AffectedEntity = Methods
-		$18.VisibilityMask = Internal, Protected, Public
+		$18.VisibilityMask = Internal, Public
 		$18.NamingStyle = PascalCase
 		$18.IncludeInstanceMembers = True
 		$18.IncludeStaticEntities = True
@@ -236,9 +236,9 @@ Global
 		$34.IncludeInstanceMembers = True
 		$34.IncludeStaticEntities = True
 		$7.NamingRule = $36
-		$36.Name = Methods (Private)
+		$36.Name = Methods (private, protected)
 		$36.AffectedEntity = Method
-		$36.VisibilityMask = Private
+		$36.VisibilityMask = Private, Protected
 		$36.NamingStyle = CamelCase
 		$36.IncludeInstanceMembers = True
 		$36.IncludeStaticEntities = True

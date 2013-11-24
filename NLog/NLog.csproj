@@ -48,11 +48,20 @@
     <Compile Include="NLog\Appender\SocketAppenderBase.cs" />
     <Compile Include="NLog\LoggerFactory.cs" />
     <Compile Include="NLog\Logger.cs" />
-    <Compile Include="..\..\Gabble\Gabble\Gabble\TcpSocket.cs">
-      <Link>Libraries\Gabble\TcpSocket.cs</Link>
+    <Compile Include="..\..\Gabble\Gabble\Gabble\AbstractTcpSocket.cs">
+      <Link>Libraries\Gabble\AbstractTcpSocket.cs</Link>
     </Compile>
-    <Compile Include="..\..\Gabble\Gabble\Gabble\TcpSocketEventArgs.cs">
-      <Link>Libraries\Gabble\TcpSocketEventArgs.cs</Link>
+    <Compile Include="..\..\Gabble\Gabble\Gabble\TcpClientSocket.cs">
+      <Link>Libraries\Gabble\TcpClientSocket.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gabble\Gabble\Gabble\TcpServerSocket.cs">
+      <Link>Libraries\Gabble\TcpServerSocket.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gabble\Gabble\Gabble\EventArgs\ReceiveEventArgs.cs">
+      <Link>Libraries\Gabble\EventArgs\ReceiveEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gabble\Gabble\Gabble\EventArgs\TcpSocketEventArgs.cs">
+      <Link>Libraries\Gabble\EventArgs\TcpSocketEventArgs.cs</Link>
     </Compile>
   </ItemGroup>
 </Project>

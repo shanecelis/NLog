@@ -6,7 +6,7 @@ namespace NLog {
     public class SOSMaxAppender : SocketAppenderBase {
         protected override byte[] serializeMessage(string message, LogLevel logLevel) {
             var formattedMessage = formatLogMessage(message, logLevel.ToString());
-            var bytes = Encoding.ASCII.GetBytes(formattedMessage).ToList();
+            var bytes = Encoding.UTF8.GetBytes(formattedMessage).ToList();
             bytes.Add(0);
             return bytes.ToArray();
         }
