@@ -3,21 +3,23 @@ using System.Collections.Generic;
 
 namespace NLog {
     public enum LogLevel : byte {
-        On    = 0,
+        On = 0,
         Trace = 1,
         Debug = 2,
-        Info  = 3,
-        Warn  = 4,
+        Info = 3,
+        Warn = 4,
         Error = 5,
         Fatal = 6,
-        Off   = 7
+        Off = 7
     }
 
     public class Logger {
         public delegate void Appender(string message, LogLevel logLevel);
 
         public string name { get; private set; }
+
         public LogLevel minLogLevel { get; set; }
+
         public Appender appender { get; set; }
 
         static readonly Dictionary<LogLevel, string> _logLevelPrefixes = new Dictionary<LogLevel, string>() {
@@ -68,6 +70,16 @@ namespace NLog {
 
         public void Fatal(string message) {
             log(message, LogLevel.Fatal);
+        }
+
+        public void Assert(bool condition, string message) {
+            if (!condition)
+                throw new NLogAssert(message);
+        }
+    }
+
+    public class NLogAssert : Exception {
+        public NLogAssert(string message) : base(message) {
         }
     }
 }

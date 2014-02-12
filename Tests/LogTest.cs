@@ -14,5 +14,18 @@ public class LogTest {
         Log.Error("Error");
         Log.Fatal("Fatal");
     }
+
+    [Test]
+    public void AssertDoesNotThrow() {
+        var message = "Did not work";
+        Log.Assert(true, message);
+    }
+
+    [Test]
+    [ExpectedException(typeof(NLogAssert), "Did not work")]
+    public void AssertThrows() {
+        var message = "Did not work";
+        Log.Assert(false, message);
+    }
 }
 

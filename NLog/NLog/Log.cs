@@ -25,6 +25,10 @@ namespace NLog {
         public static void Fatal(string message) {
             _log.Fatal(message);
         }
+
+        public static void Assert(bool condition, string message) {
+            _log.Assert(condition, message);
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using NLog;
+using System.Net;
 
 [TestFixture]
 public class SOSMaxAppenderTest {
@@ -9,7 +10,7 @@ public class SOSMaxAppenderTest {
     public void BeforeEach() {
         LoggerFactory.RemoveAllAppender();
         _sosLog = new SOSMaxAppender();
-        _sosLog.Connect();
+        _sosLog.Connect(IPAddress.Loopback, 1234);
         LoggerFactory.AddAppender(_sosLog.Send);
     }
 

@@ -3,6 +3,7 @@ using NLog;
 using System;
 
 // while :; do nc -l -p 4444; done
+using System.Net;
 
 [TestFixture]
 public class SocketAppenderTest {
@@ -19,7 +20,7 @@ public class SocketAppenderTest {
     public void Test() {
         LoggerFactory.RemoveAllAppender();
         var s = new SocketAppender(true);
-        s.Connect();
+        s.Connect(IPAddress.Loopback, 1234);
         LoggerFactory.AddAppender(s.Send);
         LoggerFactory.AddAppender((message, logLevel) => Console.WriteLine(message));
         TestHelper.LogAllLogLevels(LoggerFactory.GetLogger("SocketAppender"));
