@@ -56,7 +56,10 @@ class describe_TcpServerSocket : nspec {
             };
 
             after = () => {
-                server.Disconnect();
+                try {
+                    server.Disconnect();
+                } catch (Exception) {
+                }
             };
 
             it["can disconnect"] = () => {

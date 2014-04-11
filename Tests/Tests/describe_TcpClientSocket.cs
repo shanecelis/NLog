@@ -147,8 +147,7 @@ class describe_TcpClientSocket : nspec {
             _clientServer.Close();
             _acceptServer.Disconnect(false);
             _acceptServer.Close();
-        } catch (Exception ex) {
-            Console.WriteLine(ex);
+        } catch (Exception) {
         }
     }
 }
