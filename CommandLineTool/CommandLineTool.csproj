@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{67D8E04D-A671-417C-B4E5-1A2116D923AD}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>Tests</RootNamespace>
-    <AssemblyName>Tests</AssemblyName>
+    <ProjectGuid>{283D6375-7412-48A5-8523-1CD27AA1FBDE}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>CommandLineTool</RootNamespace>
+    <AssemblyName>CommandLineTool</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -18,31 +18,21 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
+    <Externalconsole>true</Externalconsole>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
+    <Externalconsole>true</Externalconsole>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="nunit.framework">
-      <HintPath>Libraries\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="NSpec">
-      <HintPath>Libraries\NSpec\NSpec.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tests\describe_Logger.cs" />
-    <Compile Include="Tests\describe_LoggerFactory.cs" />
-    <Compile Include="Tests\describe_DefaultLogMessageFormatter.cs" />
-    <Compile Include="Tests\describe_TcpClientSocket.cs" />
-    <Compile Include="Tests\describe_TcpServerSocket.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -50,18 +40,5 @@
       <Project>{B3398605-77E5-4532-8C8F-C90643E6BB7E}</Project>
       <Name>NLog</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Libraries\" />
-    <Folder Include="Tests\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Libraries\nunit.framework.dll" />
-    <None Include="Libraries\NSpec\NSpec.dll" />
-    <None Include="Libraries\NSpec\NSpec.dll.mdb" />
-    <None Include="Libraries\NSpec\NSpecRunner.exe" />
-    <None Include="Libraries\NSpec\NSpecRunner.exe.config" />
-    <None Include="Libraries\NSpec\NSpecRunner.exe.mdb" />
-    <None Include="Libraries\NSpec\Domain\Formatters\Templates\TiddlyWiki_Template.html" />
   </ItemGroup>
 </Project>

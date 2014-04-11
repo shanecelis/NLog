@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Gabble;
 using System.Net;
 
 namespace NLog {
@@ -27,11 +26,11 @@ namespace NLog {
             socket.Disconnect();
         }
 
-        public void Send(string message, LogLevel logLevel) {
+        public void Send(LogLevel logLevel, string message) {
             if (isSocketReady())
-                socket.Send(serializeMessage(message, logLevel));
+                socket.Send(serializeMessage(logLevel, message));
             else
-                _history.Add(new HistoryItem(message, logLevel));
+                _history.Add(new HistoryItem(logLevel, message));
         }
 
         bool isSocketReady() {
@@ -42,24 +41,24 @@ namespace NLog {
 
         void onConnected(object sender, EventArgs e) {
             if (_history.Count > 0) {
-                Send("SocketAppenderBase: Flush history - - - - - - - - - - - - - - - - - - - -", LogLevel.Debug);
+                Send(LogLevel.Debug, "SocketAppenderBase: Flush history - - - - - - - - - - - - - - - - - - - -");
                 foreach (HistoryItem item in _history)
-                    Send(item.message, item.logLevel);
+                    Send(item.logLevel, item.message);
 
-                Send("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -", LogLevel.Debug);
+                Send(LogLevel.Debug, "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
                 _history.Clear();
             }
         }
 
-        protected abstract byte[] serializeMessage(string message, LogLevel logLevel);
+        protected abstract byte[] serializeMessage(LogLevel logLevel, string message);
 
         struct HistoryItem {
-            public string message;
             public LogLevel logLevel;
+            public string message;
 
-            public HistoryItem(string message, LogLevel logLevel) {
-                this.message = message;
+            public HistoryItem(LogLevel logLevel, string message) {
                 this.logLevel = logLevel;
+                this.message = message;
             }
         }
     }

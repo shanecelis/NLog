@@ -36,32 +36,23 @@
     <Folder Include="NLog\" />
     <Folder Include="NLog\Appender\" />
     <Folder Include="NLog\Formatter\" />
-    <Folder Include="Libraries\" />
-    <Folder Include="Libraries\Gabble\" />
+    <Folder Include="NLog\Appender\SocketAppender\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NLog\Appender\FileLogAppender.cs" />
-    <Compile Include="NLog\Appender\SOSMaxAppender.cs" />
     <Compile Include="NLog\Log.cs" />
-    <Compile Include="NLog\Appender\SocketAppender.cs" />
     <Compile Include="NLog\Formatter\ColorCodeFormatter.cs" />
-    <Compile Include="NLog\Appender\SocketAppenderBase.cs" />
-    <Compile Include="NLog\LoggerFactory.cs" />
+    <Compile Include="NLog\LogLevel.cs" />
     <Compile Include="NLog\Logger.cs" />
-    <Compile Include="..\..\Gabble\Gabble\Gabble\AbstractTcpSocket.cs">
-      <Link>Libraries\Gabble\AbstractTcpSocket.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Gabble\Gabble\Gabble\TcpClientSocket.cs">
-      <Link>Libraries\Gabble\TcpClientSocket.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Gabble\Gabble\Gabble\TcpServerSocket.cs">
-      <Link>Libraries\Gabble\TcpServerSocket.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Gabble\Gabble\Gabble\EventArgs\ReceiveEventArgs.cs">
-      <Link>Libraries\Gabble\EventArgs\ReceiveEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Gabble\Gabble\Gabble\EventArgs\TcpSocketEventArgs.cs">
-      <Link>Libraries\Gabble\EventArgs\TcpSocketEventArgs.cs</Link>
-    </Compile>
+    <Compile Include="NLog\LoggerFactory.cs" />
+    <Compile Include="NLog\Formatter\DefaultLogMessageFormatter.cs" />
+    <Compile Include="NLog\Appender\FileWriter.cs" />
+    <Compile Include="NLog\Appender\SocketAppender\SocketAppender.cs" />
+    <Compile Include="NLog\Appender\SocketAppender\SocketAppenderBase.cs" />
+    <Compile Include="NLog\Appender\SocketAppender\SOSMaxAppender.cs" />
+    <Compile Include="NLog\Appender\SocketAppender\Networking\AbstractTcpSocket.cs" />
+    <Compile Include="NLog\Appender\SocketAppender\Networking\EventArgs\ReceiveEventArgs.cs" />
+    <Compile Include="NLog\Appender\SocketAppender\Networking\EventArgs\TcpSocketEventArgs.cs" />
+    <Compile Include="NLog\Appender\SocketAppender\Networking\TcpClientSocket.cs" />
+    <Compile Include="NLog\Appender\SocketAppender\Networking\TcpServerSocket.cs" />
   </ItemGroup>
 </Project>

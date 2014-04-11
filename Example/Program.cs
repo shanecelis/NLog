@@ -1,35 +1,76 @@
 using System;
 using NLog;
+using System.Net;
 
 namespace Example {
     public class Program {
-
         public static void Main(string[] args) {
-            LoggerFactory.globalMinLogLevel = LogLevel.On;
-            LoggerFactory.AddAppender((message, logLevel) => Console.WriteLine(ColorCodeFormatter.FormatMessage(message, logLevel)));
+            LoggerFactory.globalLogLevel = LogLevel.On;
+            consoleLogTest();
+            //fileWriterTest();
+            //clientSocketTest();
+            //serverSocketTest();
 
-            // Listen (requires netcat)
-            // $ nc -lvvp 1234
-            var sender = new SocketAppender(true);
-            LoggerFactory.AddAppender(sender.Send);
+            Log.Trace("trace");
+            Log.Debug("debug");
+            Log.Info("info");
+            Log.Warn("warn");
+            Log.Error("error");
+            Log.Fatal("fatal");
 
+            Console.Read();
+        }
+
+        static void consoleLogTest() {
+            var formatter = new DefaultLogMessageFormatter();
+            var colorFormatter = new ColorCodeFormatter();
+            LoggerFactory.appenders += (logger, logLevel, message) => {
+                var logMessage = formatter.FormatMessage(logger, logLevel, message);
+                var coloredLogMessage = colorFormatter.FormatMessage(logLevel, logMessage);
+                Console.WriteLine(coloredLogMessage);
+            };
+        }
+
+        static void fileWriterTest() {
+            var fileWriter = new FileWriter("Log.txt");
+            fileWriter.ClearFile();
+            var formatter = new DefaultLogMessageFormatter();
+            var colorFormatter = new ColorCodeFormatter();
+            LoggerFactory.appenders += (logger, logLevel, message) => {
+                var logMessage = formatter.FormatMessage(logger, logLevel, message);
+                var coloredLogMessage = colorFormatter.FormatMessage(logLevel, logMessage);
+                fileWriter.WriteLine(coloredLogMessage);
+            };
+        }
+
+        static void clientSocketTest() {
             // Connect
-            // $ telnet 127.0.0.1 1235
-            var listener = new SocketAppender(true);
-            LoggerFactory.AddAppender(listener.Send);
+            // $ nc -lp 1234
+            var formatter = new DefaultLogMessageFormatter();
+            var colorFormatter = new ColorCodeFormatter();
+            var socket = new SocketAppender();
+            LoggerFactory.appenders += ((logger, logLevel, message) => {
+                var logMessage = formatter.FormatMessage(logger, logLevel, message);
+                var coloredLogMessage = colorFormatter.FormatMessage(logLevel, logMessage);
+                socket.Send(logLevel, coloredLogMessage);
+            });
 
-            sender.Connect("127.0.0.1", 1234);
-            listener.Listen(1235);
+            socket.Connect(IPAddress.Loopback, 1234);
+        }
 
-            var l = LoggerFactory.GetLogger("TestLogger", LogLevel.Info);
-            l.Debug("You should not see me...");
-            l.Info("But me!");
+        static void serverSocketTest() {
+            // Connect
+            // $ telnet 127.0.0.1 1234
+            var formatter = new DefaultLogMessageFormatter();
+            var colorFormatter = new ColorCodeFormatter();
+            var socket = new SocketAppender();
+            LoggerFactory.appenders += ((logger, logLevel, message) => {
+                var logMessage = formatter.FormatMessage(logger, logLevel, message);
+                var coloredLogMessage = colorFormatter.FormatMessage(logLevel, logMessage);
+                socket.Send(logLevel, coloredLogMessage);
+            });
 
-            Log.Trace("Hello world!");
-
-            Console.Read();
-            Log.Warn("Bye bye");
-            Console.Read();
+            socket.Listen(1234);
         }
     }
 }

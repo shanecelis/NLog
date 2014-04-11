@@ -3,57 +3,50 @@
 // 
 // For a complete list see http://en.wikipedia.org/wiki/ANSI_escape_code#Colors
 
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 namespace NLog {
-    public static class ColorCodeFormatter {
-        static readonly string _reset = "0m";
-        static readonly string _esc = "\x1B[";
+    public class ColorCodeFormatter {
+        const string Reset = "0m";
+        const string ESC = "\x1B[";
 
-        // 0: background_color, 1: forground_color, 2: message
-        static readonly string _format = _esc + "{0}" + _esc + "{1}" + "{2}" + _esc + _reset;
-        
         // Foreground colors
-        //static readonly string _fg_black = "30m";
-        //static readonly string _fg_red = "31m";
-        static readonly string _fg_green = "32m";
-        static readonly string _fg_yellow = "33m";
-        static readonly string _fg_blue = "34m";
-        //static readonly string _fg_magenta = "35m";
-        //static readonly string _fg_cyan = "36m";
-        static readonly string _fg_white = "37m";
+        const string FG_Black   = "30m";
+        const string FG_Red     = "31m";
+        const string FG_Green   = "32m";
+        const string FG_Yellow  = "33m";
+        const string FG_Blue    = "34m";
+        const string FG_Magenta = "35m";
+        const string FG_Cyan    = "36m";
+        const string FG_White   = "37m";
 
         // Background colors
-        static readonly string _bg_none = "";
-        //static readonly string _bg_black = "40m";
-        static readonly string _bg_red = "41m";
-        //static readonly string _bg_green = "42m";
-        //static readonly string _bg_yellow = "43m";
-        //static readonly string _bg_blue = "44m";
-        static readonly string _bg_magenta = "45m";
-        static readonly string _bg_cyan = "46m";
-        //static readonly string _bg_white = "47m";
+        const string BG_None    = "";
+        const string BG_Black   = "40m";
+        const string BG_Red     = "41m";
+        const string BG_Green   = "42m";
+        const string BG_Yellow  = "43m";
+        const string BG_Blue    = "44m";
+        const string BG_Magenta = "45m";
+        const string BG_Cyan    = "46m";
+        const string BG_White   = "47m";
 
-        static readonly Dictionary<LogLevel, string> _foregroundColors = new Dictionary<LogLevel, string>() {
-            { LogLevel.Trace, _fg_white },
-            { LogLevel.Debug, _fg_blue },
-            { LogLevel.Info, _fg_green },
-            { LogLevel.Warn, _fg_yellow },
-            { LogLevel.Error, _fg_white },
-            { LogLevel.Fatal, _fg_white }
-        };
-        static readonly Dictionary<LogLevel, string> _backgroundColors = new Dictionary<LogLevel, string>() {
-            { LogLevel.Trace, _bg_cyan },
-            { LogLevel.Debug, _bg_none },
-            { LogLevel.Info, _bg_none },
-            { LogLevel.Warn, _bg_none },
-            { LogLevel.Error, _bg_red },
-            { LogLevel.Fatal, _bg_magenta }
+        // 0: background_color, 1: forground_color, 2: message
+        const string Format = ESC + "{0}" + ESC + "{1}" + "{2}" + ESC + Reset;
+
+        static readonly Dictionary<LogLevel, Tuple<string, string>> colors = new Dictionary<LogLevel, Tuple<string, string>> {
+            { LogLevel.Trace, new Tuple<string, string>(FG_White,  BG_Cyan) },
+            { LogLevel.Debug, new Tuple<string, string>(FG_Blue,   BG_None) },
+            { LogLevel.Info,  new Tuple<string, string>(FG_Green,  BG_None) },
+            { LogLevel.Warn,  new Tuple<string, string>(FG_Yellow, BG_None) },
+            { LogLevel.Error, new Tuple<string, string>(FG_White,  BG_Red)  },
+            { LogLevel.Fatal, new Tuple<string, string>(FG_White,  BG_Magenta) }
         };
 
-        public static string FormatMessage(string message, LogLevel logLevel) {
-            return String.Format(_format, _backgroundColors[logLevel], _foregroundColors[logLevel], message);
+        public string FormatMessage(LogLevel logLevel, string message) {
+            var colorsTuple = colors[logLevel];
+            return string.Format(Format, colorsTuple.Item2, colorsTuple.Item1, message);
         }
     }
 }

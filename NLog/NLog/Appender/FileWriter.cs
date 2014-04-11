@@ -1,20 +1,18 @@
 using System.IO;
 
 namespace NLog {
-    public class FileLogAppender {
+    public class FileWriter {
         readonly object _lock = new object();
         readonly string _filePath;
-        readonly bool _useColorCodes;
 
-        public FileLogAppender(string filePath, bool useColorCodes) {
+        public FileWriter(string filePath) {
             _filePath = filePath;
-            _useColorCodes = useColorCodes;
         }
 
-        public void WriteLine(string message, LogLevel logLevel) {
+        public void WriteLine(string message) {
             lock (_lock) {
                 using (StreamWriter writer = new StreamWriter(_filePath, true)) {
-                    writer.WriteLine(_useColorCodes ? ColorCodeFormatter.FormatMessage(message, logLevel) : message);
+                    writer.WriteLine(message);
                 }
             }
         }
@@ -22,7 +20,7 @@ namespace NLog {
         public void ClearFile() {
             lock (_lock) {
                 using (StreamWriter writer = new StreamWriter(_filePath, false)) {
-                    writer.Write("");
+                    writer.Write(string.Empty);
                 }
             }
         }
