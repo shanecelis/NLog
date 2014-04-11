@@ -35,18 +35,17 @@ namespace NLog {
         // 0: background_color, 1: forground_color, 2: message
         const string Format = ESC + "{0}" + ESC + "{1}" + "{2}" + ESC + Reset;
 
-        static readonly Dictionary<LogLevel, Tuple<string, string>> colors = new Dictionary<LogLevel, Tuple<string, string>> {
-            { LogLevel.Trace, new Tuple<string, string>(FG_White,  BG_Cyan) },
-            { LogLevel.Debug, new Tuple<string, string>(FG_Blue,   BG_None) },
-            { LogLevel.Info,  new Tuple<string, string>(FG_Green,  BG_None) },
-            { LogLevel.Warn,  new Tuple<string, string>(FG_Yellow, BG_None) },
-            { LogLevel.Error, new Tuple<string, string>(FG_White,  BG_Red)  },
-            { LogLevel.Fatal, new Tuple<string, string>(FG_White,  BG_Magenta) }
+        static readonly Dictionary<LogLevel, string[]> colors = new Dictionary<LogLevel, string[]> {
+            { LogLevel.Trace, new [] { FG_White,  BG_Cyan } },
+            { LogLevel.Debug, new [] { FG_Blue,   BG_None } },
+            { LogLevel.Info,  new [] { FG_Green,  BG_None } },
+            { LogLevel.Warn,  new [] { FG_Yellow, BG_None } },
+            { LogLevel.Error, new [] { FG_White,  BG_Red } },
+            { LogLevel.Fatal, new [] { FG_White,  BG_Magenta } }
         };
 
         public string FormatMessage(LogLevel logLevel, string message) {
-            var colorsTuple = colors[logLevel];
-            return string.Format(Format, colorsTuple.Item2, colorsTuple.Item1, message);
+            return string.Format(Format, colors[logLevel][1], colors[logLevel][0], message);
         }
     }
 }
