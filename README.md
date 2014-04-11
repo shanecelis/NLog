@@ -78,5 +78,5 @@ socket.Connect(IPAddress.Loopback, 1234);
 socket.Listen(1234);
 ```
 
-### Use commandline tool (or e.g. telnet/netcat) to receive messages in your terminal
+### Use command line tool (or e.g. telnet/netcat) to receive messages in your terminal
 ![Logger output screenshot](http://sschmid.com/Dev/csharp/Libs/NLog/NLog_LogScreenshot3.png)

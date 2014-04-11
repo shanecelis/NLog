@@ -22,7 +22,7 @@ namespace NLog {
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             try {
-                _socket.Bind(new IPEndPoint(IPAddress.Loopback, port));
+                _socket.Bind(new IPEndPoint(IPAddress.Any, port));
                 _socket.Listen(100);
                 isConnected = true;
                 _log.Info(string.Format("Listening on port {0}...", port));
