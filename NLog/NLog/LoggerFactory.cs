@@ -11,8 +11,17 @@ namespace NLog {
             }
         }
 
-        public static Logger.LogDelegate appenders;
+        public static Logger.LogDelegate appenders {
+            get { return _appenders; }
+            set {
+                _appenders = value;
+                foreach (var logger in _loggers.Values)
+                    logger.OnLog += value;
+            }
+        }
+
         static LogLevel _globalLogLevel;
+        static Logger.LogDelegate _appenders;
         readonly static Dictionary<string, Logger> _loggers = new Dictionary<string, Logger>();
 
         public static Logger GetLogger(string name) {

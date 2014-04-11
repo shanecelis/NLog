@@ -149,7 +149,7 @@ class describe_TcpServerSocket : nspec {
                     server.SendWith(receiveEventArgs.client, Encoding.UTF8.GetBytes(serverMessage));
                     wait();
                 
-                    serverMessage.should_be(receivedMessage);
+                    receivedMessage.should_be(serverMessage);
                 };
 
                 it["can send to all connected clients"] = () => {
@@ -162,8 +162,8 @@ class describe_TcpServerSocket : nspec {
                     server.Send(Encoding.UTF8.GetBytes(message));
                     wait();
                 
-                    message.should_be(client1ReceivedMessage);
-                    message.should_be(client2ReceivedMessage);
+                    client1ReceivedMessage.should_be(message);
+                    client2ReceivedMessage.should_be(message);
                 };
             };
         };

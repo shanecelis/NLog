@@ -66,6 +66,16 @@ class describe_LoggerFactory : nspec {
             appenderMessage2.should_be("hi");
         };
 
+        it["sets appender on created logger"] = () => {
+            var logger = LoggerFactory.GetLogger("MyLogger");
+            var didLog = false;
+            LoggerFactory.appenders += (log, logLevel, message) => {
+                didLog = true;
+            };
+            logger.Info("hi");
+            didLog.should_be_true();
+        };
+
         it["clears global appenders"] = () => {
             var appenderLogLevel = LogLevel.Off;
             var appenderMessage = string.Empty;
