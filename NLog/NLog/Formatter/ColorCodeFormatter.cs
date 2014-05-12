@@ -3,7 +3,6 @@
 // 
 // For a complete list see http://en.wikipedia.org/wiki/ANSI_escape_code#Colors
 
-using System;
 using System.Collections.Generic;
 
 namespace NLog {
