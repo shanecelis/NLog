@@ -58,7 +58,7 @@ namespace NLog {
         }
 
         public void SendWith(Socket socket, byte[] bytes) {
-            if (isConnected)
+            if (isConnected && socket.Connected)
                 socket.BeginSend(bytes, 0, bytes.Length, SocketFlags.None, onSent, socket);
         }
 
