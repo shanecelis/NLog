@@ -22,12 +22,14 @@ namespace Example {
         }
 
         static void consoleLogTest() {
-            var formatter = new DefaultLogMessageFormatter();
+            var defaultFormatter = new DefaultLogMessageFormatter();
+            var timestampFormatter = new TimestampFormatter();
             var colorFormatter = new ColorCodeFormatter();
             LoggerFactory.AddAppender((logger, logLevel, message) => {
-                var logMessage = formatter.FormatMessage(logger, logLevel, message);
-                var coloredLogMessage = colorFormatter.FormatMessage(logLevel, logMessage);
-                Console.WriteLine(coloredLogMessage);
+                message = defaultFormatter.FormatMessage(logger, logLevel, message);
+                message = timestampFormatter.FormatMessage(logger, logLevel, message);
+                message = colorFormatter.FormatMessage(logLevel, message);
+                Console.WriteLine(message);
             });
         }
 

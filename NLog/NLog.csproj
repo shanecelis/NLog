@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B3398605-77E5-4532-8C8F-C90643E6BB7E}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -54,5 +54,6 @@
     <Compile Include="NLog\Appender\SocketAppender\Networking\EventArgs\TcpSocketEventArgs.cs" />
     <Compile Include="NLog\Appender\SocketAppender\Networking\TcpClientSocket.cs" />
     <Compile Include="NLog\Appender\SocketAppender\Networking\TcpServerSocket.cs" />
+    <Compile Include="NLog\Formatter\TimestampFormatter.cs" />
   </ItemGroup>
 </Project>
