@@ -17,7 +17,7 @@ namespace CommandLineTool {
                     LoggerFactory.globalLogLevel = LogLevel.On;
             }
 
-            LoggerFactory.appenders += (logger, logLevel, message) => Console.WriteLine(message);
+            LoggerFactory.AddAppender((logger, logLevel, message) => Console.WriteLine(message));
 
             if (args.Length == 0)
                 printUsage();

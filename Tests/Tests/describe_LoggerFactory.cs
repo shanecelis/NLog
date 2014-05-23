@@ -45,17 +45,17 @@ class describe_LoggerFactory : nspec {
         it["creates new logger with global appender"] = () => {
             var appenderLogLevel = LogLevel.Off;
             var appenderMessage = string.Empty;
-            LoggerFactory.appenders += (log, logLevel, message) => {
+            LoggerFactory.AddAppender((log, logLevel, message) => {
                 appenderLogLevel = logLevel;
                 appenderMessage = message;
-            };
+            });
 
             var appenderLogLevel2 = LogLevel.Off;
             var appenderMessage2 = string.Empty;
-            LoggerFactory.appenders += (log, logLevel, message) => {
+            LoggerFactory.AddAppender((log, logLevel, message) => {
                 appenderLogLevel2 = logLevel;
                 appenderMessage2 = message;
-            };
+            });
 
             var logger = LoggerFactory.GetLogger("MyLogger");
             logger.Info("hi");
@@ -66,23 +66,31 @@ class describe_LoggerFactory : nspec {
             appenderMessage2.should_be("hi");
         };
 
-        it["sets appender on created logger"] = () => {
+        it["adds appender on created logger"] = () => {
             var logger = LoggerFactory.GetLogger("MyLogger");
             var didLog = false;
-            LoggerFactory.appenders += (log, logLevel, message) => {
-                didLog = true;
-            };
+            LoggerFactory.AddAppender((log, logLevel, message) => didLog = true);
             logger.Info("hi");
             didLog.should_be_true();
+        };
+
+        it["removes appender on created logger"] = () => {
+            var didLog = false;
+            Logger.LogDelegate appender = (log, logLevel, message) => didLog = true;
+            LoggerFactory.AddAppender(appender);
+            var logger = LoggerFactory.GetLogger("MyLogger");
+            LoggerFactory.RemoveAppender(appender);
+            logger.Info("hi");
+            didLog.should_be_false();
         };
 
         it["clears global appenders"] = () => {
             var appenderLogLevel = LogLevel.Off;
             var appenderMessage = string.Empty;
-            LoggerFactory.appenders += (log, logLevel, message) => {
+            LoggerFactory.AddAppender((log, logLevel, message) => {
                 appenderLogLevel = logLevel;
                 appenderMessage = message;
-            };
+            });
             LoggerFactory.Reset();
             var logger = LoggerFactory.GetLogger("MyLogger");
             logger.Info("hi");

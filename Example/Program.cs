@@ -24,11 +24,11 @@ namespace Example {
         static void consoleLogTest() {
             var formatter = new DefaultLogMessageFormatter();
             var colorFormatter = new ColorCodeFormatter();
-            LoggerFactory.appenders += (logger, logLevel, message) => {
+            LoggerFactory.AddAppender((logger, logLevel, message) => {
                 var logMessage = formatter.FormatMessage(logger, logLevel, message);
                 var coloredLogMessage = colorFormatter.FormatMessage(logLevel, logMessage);
                 Console.WriteLine(coloredLogMessage);
-            };
+            });
         }
 
         static void fileWriterTest() {
@@ -36,11 +36,11 @@ namespace Example {
             fileWriter.ClearFile();
             var formatter = new DefaultLogMessageFormatter();
             var colorFormatter = new ColorCodeFormatter();
-            LoggerFactory.appenders += (logger, logLevel, message) => {
+            LoggerFactory.AddAppender((logger, logLevel, message) => {
                 var logMessage = formatter.FormatMessage(logger, logLevel, message);
                 var coloredLogMessage = colorFormatter.FormatMessage(logLevel, logMessage);
                 fileWriter.WriteLine(coloredLogMessage);
-            };
+            });
         }
 
         static void clientSocketTest() {
@@ -49,11 +49,11 @@ namespace Example {
             var formatter = new DefaultLogMessageFormatter();
             var colorFormatter = new ColorCodeFormatter();
             var socket = new SocketAppender();
-            LoggerFactory.appenders += ((logger, logLevel, message) => {
+            LoggerFactory.AddAppender(((logger, logLevel, message) => {
                 var logMessage = formatter.FormatMessage(logger, logLevel, message);
                 var coloredLogMessage = colorFormatter.FormatMessage(logLevel, logMessage);
                 socket.Send(logLevel, coloredLogMessage);
-            });
+            }));
 
             socket.Connect(IPAddress.Loopback, 1234);
         }
@@ -64,11 +64,11 @@ namespace Example {
             var formatter = new DefaultLogMessageFormatter();
             var colorFormatter = new ColorCodeFormatter();
             var socket = new SocketAppender();
-            LoggerFactory.appenders += ((logger, logLevel, message) => {
+            LoggerFactory.AddAppender(((logger, logLevel, message) => {
                 var logMessage = formatter.FormatMessage(logger, logLevel, message);
                 var coloredLogMessage = colorFormatter.FormatMessage(logLevel, logMessage);
                 socket.Send(logLevel, coloredLogMessage);
-            });
+            }));
 
             socket.Listen(1234);
         }
