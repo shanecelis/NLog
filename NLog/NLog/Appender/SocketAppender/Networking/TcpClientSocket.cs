@@ -25,8 +25,9 @@ namespace NLog {
                 IPEndPoint clientEndPoint = (IPEndPoint)socket.RemoteEndPoint;
                 _log.Info(string.Format("Connected to {0}:{1}",
                     clientEndPoint.Address, clientEndPoint.Port));
-                if (OnConnect != null)
+                if (OnConnect != null) {
                     OnConnect(this, null);
+                }
                 startReceiving(socket);
             } catch (Exception ex) {
                 _log.Warn(ex.Message);

@@ -27,10 +27,11 @@ namespace NLog {
         }
 
         public void Send(LogLevel logLevel, string message) {
-            if (isSocketReady())
+            if (isSocketReady()) {
                 socket.Send(serializeMessage(logLevel, message));
-            else
+            } else {
                 _history.Add(new HistoryItem(logLevel, message));
+            }
         }
 
         bool isSocketReady() {
@@ -42,8 +43,9 @@ namespace NLog {
         void onConnected(object sender, EventArgs e) {
             if (_history.Count > 0) {
                 Send(LogLevel.Debug, "SocketAppenderBase: Flush history - - - - - - - - - - - - - - - - - - - -");
-                foreach (HistoryItem item in _history)
+                foreach (HistoryItem item in _history) {
                     Send(item.logLevel, item.message);
+                }
 
                 Send(LogLevel.Debug, "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
                 _history.Clear();

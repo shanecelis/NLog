@@ -39,13 +39,15 @@ namespace NLog {
         }
 
         public void Assert(bool condition, string message) {
-            if (!condition)
+            if (!condition) {
                 throw new NLogAssertException(message);
+            }
         }
 
         void log(LogLevel logLvl, string message) {
-            if (OnLog != null && logLevel <= logLvl)
+            if (OnLog != null && logLevel <= logLvl) {
                 OnLog(this, logLvl, message);
+            }
         }
     }
 

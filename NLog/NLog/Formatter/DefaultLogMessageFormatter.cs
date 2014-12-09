@@ -10,8 +10,9 @@ namespace NLog {
             var names = Enum.GetNames(typeof(LogLevel));
             foreach (var name in names) {
                 var length = name.Length;
-                if (length > _maxLogLevelLength)
+                if (length > _maxLogLevelLength) {
                     _maxLogLevelLength = length;
+                }
             }
 
             _maxLogLevelLength += 2;

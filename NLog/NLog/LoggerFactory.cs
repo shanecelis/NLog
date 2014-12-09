@@ -6,8 +6,9 @@ namespace NLog {
             get { return _globalLogLevel; }
             set {
                 _globalLogLevel = value;
-                foreach (var logger in _loggers.Values)
+                foreach (var logger in _loggers.Values) {
                     logger.logLevel = value;
+                }
             }
         }
 
@@ -17,21 +18,26 @@ namespace NLog {
 
         public static void AddAppender(Logger.LogDelegate appender) {
             _appenders += appender;
-            foreach (var logger in _loggers.Values)
+            foreach (var logger in _loggers.Values) {
                 logger.OnLog += appender;
+            }
         }
 
         public static void RemoveAppender(Logger.LogDelegate appender) {
             _appenders -= appender;
-            foreach (var logger in _loggers.Values)
+            foreach (var logger in _loggers.Values) {
                 logger.OnLog -= appender;
+            }
         }
 
         public static Logger GetLogger(string name) {
-            if (!_loggers.ContainsKey(name))
-                _loggers.Add(name, createLogger(name));
+            Logger logger;
+            if (!_loggers.TryGetValue(name, out logger)) {
+                logger = createLogger(name);
+                _loggers.Add(name, logger);
+            }
 
-            return _loggers[name];
+            return logger;
         }
 
         public static void Reset() {

@@ -18,14 +18,16 @@ namespace NLog {
         protected Socket _socket;
 
         protected void triggerOnReceive(ReceiveVO receiveVO, int bytesReceived) {
-            if (OnReceive != null)
+            if (OnReceive != null) {
                 OnReceive(this, new ReceiveEventArgs(receiveVO.socket,
                     trimmedBuffer(receiveVO.buffer, bytesReceived)));
+            }
         }
 
         protected void triggerOnDisconnect() {
-            if (OnDisconnect != null)
+            if (OnDisconnect != null) {
                 OnDisconnect(this, null);
+            }
         }
 
         protected void startReceiving(Socket socket) {
@@ -58,8 +60,9 @@ namespace NLog {
         }
 
         public void SendWith(Socket socket, byte[] bytes) {
-            if (isConnected && socket.Connected)
+            if (isConnected && socket.Connected) {
                 socket.BeginSend(bytes, 0, bytes.Length, SocketFlags.None, onSent, socket);
+            }
         }
 
         void onSent(IAsyncResult ar) {

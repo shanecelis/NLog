@@ -50,8 +50,9 @@ namespace NLog {
             IPEndPoint clientEndPoint = (IPEndPoint)client.RemoteEndPoint;
             _log.Info(string.Format("New client connection accepted ({0}:{1})",
                 clientEndPoint.Address, clientEndPoint.Port));
-            if (OnClientConnect != null)
+            if (OnClientConnect != null) {
                 OnClientConnect(this, new TcpSocketEventArgs(client));
+            }
 
             startReceiving(client);
         }
@@ -66,18 +67,21 @@ namespace NLog {
             }
             socket.Close();
             _clients.Remove(socket);
-            if (OnClientDisconnect != null)
+            if (OnClientDisconnect != null) {
                 OnClientDisconnect(this, new TcpSocketEventArgs(socket));
+            }
         }
 
         public override void Send(byte[] bytes) {
-            foreach (var client in _clients)
+            foreach (var client in _clients) {
                 SendWith(client, bytes);
+            }
         }
 
         public override void Disconnect() {
-            foreach (var client in _clients)
+            foreach (var client in _clients) {
                 client.BeginDisconnect(false, onClientDisconnected, client);
+            }
 
             if (isConnected) {
                 _log.Info("Stopped listening.");
