@@ -11,22 +11,25 @@ namespace CommandLineTool {
             LoggerFactory.globalLogLevel = LogLevel.Warn;
 
             foreach (var arg in args) {
-                if (arg == "-v")
+                if (arg == "-v") {
                     LoggerFactory.globalLogLevel = LogLevel.Info;
-                if (arg == "-vv")
+                }
+                if (arg == "-vv") {
                     LoggerFactory.globalLogLevel = LogLevel.On;
+                }
             }
 
             LoggerFactory.AddAppender((logger, logLevel, message) => Console.WriteLine(message));
 
-            if (args.Length == 0)
+            if (args.Length == 0) {
                 printUsage();
-            else if (args[0] == "-l")
+            } else if (args[0] == "-l") {
                 initServer(args);
-            else if (args[0] == "-c")
+            } else if (args[0] == "-c") {
                 initClient(args);
-            else
+            } else {
                 printUsage();
+            }
         }
 
         static void printUsage() {

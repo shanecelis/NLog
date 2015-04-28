@@ -1,15 +1,16 @@
 using System;
 using NLog;
 using System.Net;
+using System.Threading;
 
 namespace Example {
     public class Program {
         public static void Main(string[] args) {
             LoggerFactory.globalLogLevel = LogLevel.On;
             consoleLogTest();
-            //fileWriterTest();
-            //clientSocketTest();
-            //serverSocketTest();
+//            fileWriterTest();
+//            clientSocketTest();
+//            serverSocketTest();
 
             Log.Trace("trace");
             Log.Debug("debug");
@@ -37,17 +38,13 @@ namespace Example {
             var fileWriter = new FileWriter("Log.txt");
             fileWriter.ClearFile();
             var formatter = new DefaultLogMessageFormatter();
-            var colorFormatter = new ColorCodeFormatter();
             LoggerFactory.AddAppender((logger, logLevel, message) => {
                 var logMessage = formatter.FormatMessage(logger, logLevel, message);
-                var coloredLogMessage = colorFormatter.FormatMessage(logLevel, logMessage);
-                fileWriter.WriteLine(coloredLogMessage);
+                fileWriter.WriteLine(logMessage);
             });
         }
 
         static void clientSocketTest() {
-            // Connect
-            // $ nc -lp 1234
             var formatter = new DefaultLogMessageFormatter();
             var colorFormatter = new ColorCodeFormatter();
             var socket = new SocketAppender();
@@ -57,12 +54,12 @@ namespace Example {
                 socket.Send(logLevel, coloredLogMessage);
             }));
 
+            Log.Trace("History");
             socket.Connect(IPAddress.Loopback, 1234);
+            Thread.Sleep(50);
         }
 
         static void serverSocketTest() {
-            // Connect
-            // $ telnet 127.0.0.1 1234
             var formatter = new DefaultLogMessageFormatter();
             var colorFormatter = new ColorCodeFormatter();
             var socket = new SocketAppender();
