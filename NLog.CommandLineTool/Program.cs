@@ -3,7 +3,7 @@ using NLog;
 using System.Net;
 using System.Text;
 
-namespace CommandLineTool {
+namespace NLog.CommandLineTool {
     class Program {
         static AbstractTcpSocket _socket;
 
