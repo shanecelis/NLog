@@ -10,21 +10,21 @@ class describe_Logger : nspec {
     void when_created() {
         before = () => _logger = new Logger("MyLogger");
         doLogLevelTests();
-        context["asserts"] = () => {
+        context["assert"] = () => {
             it["doesn't throw when condition is true"] = () => _logger.Assert(true, "works");
             it["throws when condition is false"] = expect<NLogAssertException>(() => _logger.Assert(false, "doesn't work"));
         };
     }
 
     void doLogLevelTests() {
-        testAllLogLevels(LogLevel.On, true, true, true, true, true, true);            
-        testAllLogLevels(LogLevel.Trace, true, true, true, true, true, true);            
-        testAllLogLevels(LogLevel.Debug, false, true, true, true, true, true);            
-        testAllLogLevels(LogLevel.Info, false, false, true, true, true, true);            
-        testAllLogLevels(LogLevel.Warn, false, false, false, true, true, true);            
-        testAllLogLevels(LogLevel.Error, false, false, false, false, true, true);            
+        testAllLogLevels(LogLevel.On,    true,  true,  true,  true,  true,  true);            
+        testAllLogLevels(LogLevel.Trace, true,  true,  true,  true,  true,  true);            
+        testAllLogLevels(LogLevel.Debug, false, true,  true,  true,  true,  true);            
+        testAllLogLevels(LogLevel.Info,  false, false, true,  true,  true,  true);            
+        testAllLogLevels(LogLevel.Warn,  false, false, false, true,  true,  true);            
+        testAllLogLevels(LogLevel.Error, false, false, false, false, true,  true);            
         testAllLogLevels(LogLevel.Fatal, false, false, false, false, false, true);            
-        testAllLogLevels(LogLevel.Off, false, false, false, false, false, false);            
+        testAllLogLevels(LogLevel.Off,   false, false, false, false, false, false);            
     }
 
     void testAllLogLevels(LogLevel logLevel, bool trace, bool debug, bool info, bool warn, bool error, bool fatal) {
@@ -32,8 +32,8 @@ class describe_Logger : nspec {
             before = () => _logger.logLevel = logLevel;
             it[logs(trace) + " trace"] = () => testLogLevel(_logger.Trace, LogLevel.Trace, trace);
             it[logs(debug) + " debug"] = () => testLogLevel(_logger.Debug, LogLevel.Debug, debug);
-            it[logs(info) + " info"] = () => testLogLevel(_logger.Info, LogLevel.Info, info);
-            it[logs(warn) + " warn"] = () => testLogLevel(_logger.Warn, LogLevel.Warn, warn);
+            it[logs(info)  + " info"]  = () => testLogLevel(_logger.Info,  LogLevel.Info,  info);
+            it[logs(warn)  + " warn"]  = () => testLogLevel(_logger.Warn,  LogLevel.Warn,  warn);
             it[logs(error) + " error"] = () => testLogLevel(_logger.Error, LogLevel.Error, error);
             it[logs(fatal) + " fatal"] = () => testLogLevel(_logger.Fatal, LogLevel.Fatal, fatal);
         };

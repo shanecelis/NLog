@@ -17,9 +17,7 @@ class describe_TcpClientSocket : nspec {
             client = new TcpClientSocket();  
         };
 
-        it["isn't connected"] = () => {
-            client.isConnected.should_be_false();
-        };
+        it["isn't connected"] = () => client.isConnected.should_be_false();
 
         it["disconnects without triggering event"] = () => {
             client.OnDisconnect += (sender, e) => fail();
@@ -31,7 +29,6 @@ class describe_TcpClientSocket : nspec {
             client.Connect(IPAddress.Loopback, Port);
             wait();
             client.isConnected.should_be_false();
-
         };    
 
         it["can connect when host is available"] = () => {
@@ -45,10 +42,7 @@ class describe_TcpClientSocket : nspec {
             closeServer();
         };
 
-        it["can't send"] = () => {
-            client.Send(new byte[] { 1, 2 });
-        };
-
+        it["can't send"] = () => client.Send(new byte[] { 1, 2 });
 
         context["when connected"] = () => {
             before = () => {
@@ -80,7 +74,7 @@ class describe_TcpClientSocket : nspec {
             };
 
             it["receives message"] = () => {
-                var message = "Hello";
+                const string message = "Hello";
                 var receivedMessage = string.Empty;
                 client.OnReceive += (sender, e) => receivedMessage = Encoding.UTF8.GetString(e.bytes);
                 _clientServer.Send(Encoding.UTF8.GetBytes(message));
@@ -89,8 +83,8 @@ class describe_TcpClientSocket : nspec {
             };
 
             it["receives multiple messages"] = () => {
-                var message1 = "Hello1";
-                var message2 = "Hello2";
+                const string message1 = "Hello1";
+                const string message2 = "Hello2";
                 ReceiveEventArgs receiveEventArgs = null;
                 client.OnReceive += (sender, e) => receiveEventArgs = e;
             
@@ -104,7 +98,7 @@ class describe_TcpClientSocket : nspec {
             };
 
             it["can send"] = () => {
-                var message = "Hello";
+                const string message = "Hello";
                 var receivedMessage = string.Empty;
                 byte[] buffer = new byte[_clientServer.ReceiveBufferSize];
                 _clientServer.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None,
@@ -124,11 +118,11 @@ class describe_TcpClientSocket : nspec {
     }
 
     void fail() {
-        true.should_be_false();
+        false.should_be_true();
     }
 
     void wait() {
-        Thread.Sleep(10);
+        Thread.Sleep(20);
     }
 
     void createServer(int port) {

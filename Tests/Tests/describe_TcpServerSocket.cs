@@ -15,13 +15,8 @@ class describe_TcpServerSocket : nspec {
             server = new TcpServerSocket();
         };
 
-        it["has no connected clients"] = () => {
-            server.connectedClients.should_be(0);
-        };
-
-        it["is not listening"] = () => {
-            server.isConnected.should_be_false();
-        };
+        it["has no connected clients"] = () => server.connectedClients.should_be(0);
+        it["is not listening"] = () => server.isConnected.should_be_false();
 
         it["can disconnect without triggering event"] = () => {
             server.OnDisconnect += (sender, e) => fail();
@@ -38,17 +33,15 @@ class describe_TcpServerSocket : nspec {
         it["can not listen when address is used"] = () => {
             var blockingServer = new TcpServerSocket();
             blockingServer.Listen(Port);
-        
+
             server.Listen(Port);
             server.isConnected.should_be_false();
-        
+
             // Cleanup
             blockingServer.Disconnect();
         };
 
-        it["can not send"] = () => {
-            server.Send(new byte[] { 1, 2 });
-        };
+        it["can not send"] = () => server.Send(new byte[] { 1, 2 });
 
         context["when listening"] = () => {
             before = () => {
@@ -125,11 +118,11 @@ class describe_TcpServerSocket : nspec {
                     var message2 = "Hello2";
                     ReceiveEventArgs receiveEventArgs = null;
                     server.OnReceive += (sender, e) => receiveEventArgs = e;
-                
+
                     client1.Send(Encoding.UTF8.GetBytes(message1));
                     wait();
                     message1.should_be(Encoding.UTF8.GetString(receiveEventArgs.bytes));
-                
+
                     client1.Send(Encoding.UTF8.GetBytes(message2));
                     wait();
                     message2.should_be(Encoding.UTF8.GetString(receiveEventArgs.bytes));
@@ -143,12 +136,12 @@ class describe_TcpServerSocket : nspec {
                     server.OnReceive += (sender, e) => receiveEventArgs = e;
                     client1.Send(Encoding.UTF8.GetBytes(clientMessage));
                     wait();
-                
+
                     prepareForReceive(client1, msg => receivedMessage = msg);
-                
+
                     server.SendWith(receiveEventArgs.client, Encoding.UTF8.GetBytes(serverMessage));
                     wait();
-                
+
                     receivedMessage.should_be(serverMessage);
                 };
 
@@ -158,10 +151,10 @@ class describe_TcpServerSocket : nspec {
                     var client2ReceivedMessage = string.Empty;
                     prepareForReceive(client1, msg => client1ReceivedMessage = msg);
                     prepareForReceive(client2, msg => client2ReceivedMessage = msg);
-                
+
                     server.Send(Encoding.UTF8.GetBytes(message));
                     wait();
-                
+
                     client1ReceivedMessage.should_be(message);
                     client2ReceivedMessage.should_be(message);
                 };
@@ -170,11 +163,11 @@ class describe_TcpServerSocket : nspec {
     }
 
     void fail() {
-        true.should_be_false();
+        false.should_be_true();
     }
 
     void wait() {
-        Thread.Sleep(10);
+        Thread.Sleep(20);
     }
 
     Socket createAndConnectClient(int port) {
