@@ -1,29 +1,107 @@
-# NLog – Logging for C-Sharp
-[![Build Status](https://travis-ci.org/sschmid/NLog.svg?branch=master)](https://travis-ci.org/sschmid/NLog)
+# NLog – Flexible logging for C# and Unity
 
-### Setup Logging
+NLog is a very light logging library with a clear focus on speed, flexibility and extensibility. It supports local and remote logging out of the box, which is extremely useful, if you want to receive log messages from a mobile device over the air.
+
+[![Join the chat at https://gitter.im/sschmid/NLog](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sschmid/NLog?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+branch  | tests
+:------:|------
+master  | [![Build Status](https://travis-ci.org/sschmid/NLog.svg?branch=master)](https://travis-ci.org/sschmid/NLog)
+develop | [![Build Status](https://travis-ci.org/sschmid/NLog.svg?branch=develop)](https://travis-ci.org/sschmid/NLog)
+
+### [-> Install NLog](#install-nlog)
+
+## Overview
+NLog consists of the following modules
+
+Module  | Content
+:-------|:-------
+NLog    | Contains the core classes incl. TCP sockets and appenders
+NLog.CommandLineTool | Receive log messages via TCP in your terminal
+NLog.Unity | Integrates NLog into Unity for code free setup
+
+## Getting started
+NLog is a very light and flexible logging library. You can log messages based on their importance, e.g. you might want to log general messages with a debug log level, but unexpected messages with a warning log level. NLog provides the following log levels
+- Trace
+- Debug
+- Info
+- Warn
+- Error
+- Fatal
+
+Its plugin architecture lets you add multiple different appenders to handle log messages. An appender is a delegate method which contains the logic for processing log messages. It might write a message to a file, print it with Console.WriteLine, send it over the network via TCP, etc. You can easily write your own appenders. There are no limits!
+
+NLog ships with a handful pre-made appenders and helper classes
+- SocketAppender, either as TcpClientSocket or as TcpServerSocket
+- SOSMaxAppender, which sends messages over the network to [SOSMax](http://www.sos.powerflasher.com)
+- FileWriter
+
+To receive messages in your terminal, you can use the bundled commandline tool nlog.exe, which you can either setup as a TcpClientSocket or a TcpServerSocket.
+
 ```
+# nlog [-l port]    - listen on port
+# nlog [-c ip port] - connect to ip on port
+# [-v]              - verbose output
+# [-vv]             - even more verbose output
+
+# This will listen on port 1234
+$ nlog.exe -l 1234
+
+# This will connect to 127.0.0.1 on port 1234
+$ nlog.exe -c 127.0.0.1 1234
+```
+
+NLog.Unity adds even more appender. No code needed for setup!
+- ClientSocketAppender
+- ServerSocketAppender
+- SOSMaxSocketAppender
+- FileAppender
+- DebugLogAppender
+
+Implementing your appender is as easy as writing a single delegate method.
+
+### Setup NLog
+```cs
 LoggerFactory.globalLogLevel = LogLevel.On;
 
-// Log messages with Console.WriteLine
-LoggerFactory.appenders += (logger, logLevel, message) => {
-    Console.WriteLine(message);
-};
+// Add appender to print messages with Console.WriteLine
+LoggerFactory.AddAppender((logger, logLevel, message) => Console.WriteLine(message));
 
-// Write log to a file
+// Add another appender to write messages to a file
 var fileWriter = new FileWriter("Log.txt");
-LoggerFactory.appenders += (logger, logLevel, message) => {
-    fileWriter.WriteLine(message);
-};
+LoggerFactory.AddAppender((logger, logLevel, message) => fileWriter.WriteLine(message));
 
-// Or simply create your own custom appender
-LoggerFactory.appenders += (logger, logLevel, message) => {
-    myErrorReporter.Send(logLevel + " " + message);
-};
+// Or simply create your own custom appender, e.g.
+// a custom error reporter, which only sends messages
+// if the log level is at least 'error'
+LoggerFactory.AddAppender((logger, logLevel, message) => {
+    if (logLevel >= LogLevel.Error) {
+        myErrorReporter.Send(logLevel + " " + message);
+    }
+});
 ```
 
 ### Example
+Send log messages over the network via TCP
+```cs
+// Setup appender
+var defaultFormatter = new DefaultLogMessageFormatter();
+var colorFormatter = new ColorCodeFormatter();
+var socket = new SocketAppender();
+LoggerFactory.AddAppender(((logger, logLevel, message) => {
+    message = defaultFormatter.FormatMessage(logger, logLevel, message);
+    message = colorFormatter.FormatMessage(logLevel, message);
+    socket.Send(logLevel, message);
+}));
+
+// Setup as client
+socket.Connect(IPAddress.Loopback, 1234);
+
+// Or setup as server
+// socket.Listen(1234);
 ```
+
+```cs
 public class MyClass {
     static readonly Logger _log = LoggerFactory.GetLogger(typeof(MyClass).Name);
 
@@ -32,51 +110,31 @@ public class MyClass {
     }
 }
 ```
-![Logger output screenshot](http://sschmid.com/Dev/csharp/Libs/NLog/NLog_LogScreenshot4.png)
+![nlog Output](Readme/nlog-Output.png)
 
-### Usage
-```
-// Create a logger instance
-var logger = LoggerFactory.GetLogger("MyLogger");
-logger.Info("Hello");
+Send log messages to SOSMax
+```cs
+var defaultFormatter = new DefaultLogMessageFormatter();
+var socket = new SOSMaxAppender();
+LoggerFactory.AddAppender(((logger, logLevel, message) => {
+    message = defaultFormatter.FormatMessage(logger, logLevel, message);
+    socket.Send(logLevel, message);
+}));
 
-// Or use singleton logger
-Log.Trace("trace");
-Log.Debug("debug");
-Log.Info("info");
-Log.Warn("warn");
-Log.Error("error");
-Log.Fatal("fatal");
-```
-![Logger output screenshot](http://sschmid.com/Dev/csharp/Libs/NLog/NLog_LogScreenshot1.png)
-
-### Make it pretty
-```
-var formatter = new DefaultLogMessageFormatter();
-var colorFormatter = new ColorCodeFormatter();
-LoggerFactory.appenders += (logger, logLevel, message) => {
-    var logMessage = formatter.FormatMessage(logger, logLevel, message);
-    var coloredLogMessage = colorFormatter.FormatMessage(logLevel, logMessage);
-    Console.WriteLine(coloredLogMessage);
-};
-```
-![Logger output screenshot](http://sschmid.com/Dev/csharp/Libs/NLog/NLog_LogScreenshot2.png)
-
-### Send messages OTA via TCP
-```
-var socket = new SocketAppender();
-LoggerFactory.appenders += ((logger, logLevel, message) => {
-    var logMessage = formatter.FormatMessage(logger, logLevel, message);
-    var coloredLogMessage = colorFormatter.FormatMessage(logLevel, logMessage);
-    socket.Send(logLevel, coloredLogMessage);
-});
-
-// Setup as client
-socket.Connect(IPAddress.Loopback, 1234);
-
-// Or setup as server
-socket.Listen(1234);
+socket.Connect(IPAddress.Loopback, 4444);
 ```
 
-### Use command line tool (or e.g. telnet/netcat) to receive messages in your terminal
-![Logger output screenshot](http://sschmid.com/Dev/csharp/Libs/NLog/NLog_LogScreenshot3.png)
+![SOSMax Output](Readme/SOSMax-Output.png)
+
+# Install NLog
+Each release is published with NLog.zip attached containing all source files you need. It contains
+- NLog
+- NLog.CommandLineTool
+- NLog.Unity
+
+[Show releases](https://github.com/sschmid/NLog/releases)
+
+Alternatively you can download [bin/NLog.zip](https://github.com/sschmid/NLog/tree/develop/bin)
+
+# Maintainers(s)
+- [@sschmid](https://github.com/sschmid)

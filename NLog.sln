@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLog.CommandLineTool", "NLog.CommandLineTool\NLog.CommandLineTool.csproj", "{283D6375-7412-48A5-8523-1CD27AA1FBDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Readme", "Readme\Readme.csproj", "{FC2AA853-012C-49D8-9EAE-5F57DBCEF026}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,14 @@ Global
 		{CF28C2A2-7C97-4146-B37C-71549DFB9B86}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CF28C2A2-7C97-4146-B37C-71549DFB9B86}.Release|x86.ActiveCfg = Release|Any CPU
 		{CF28C2A2-7C97-4146-B37C-71549DFB9B86}.Release|x86.Build.0 = Release|Any CPU
+		{FC2AA853-012C-49D8-9EAE-5F57DBCEF026}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC2AA853-012C-49D8-9EAE-5F57DBCEF026}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC2AA853-012C-49D8-9EAE-5F57DBCEF026}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FC2AA853-012C-49D8-9EAE-5F57DBCEF026}.Debug|x86.Build.0 = Debug|Any CPU
+		{FC2AA853-012C-49D8-9EAE-5F57DBCEF026}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC2AA853-012C-49D8-9EAE-5F57DBCEF026}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC2AA853-012C-49D8-9EAE-5F57DBCEF026}.Release|x86.ActiveCfg = Release|Any CPU
+		{FC2AA853-012C-49D8-9EAE-5F57DBCEF026}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
@@ -88,7 +98,7 @@ Global
 		$4.inheritsScope = text/plain
 		$4.scope = text/plain
 		$0.StandardHeader = $5
-		$5.Text =
+		$5.Text = 
 		$5.IncludeInNewFiles = True
 		$0.NameConventionPolicy = $6
 		$6.Rules = $7

@@ -27,6 +27,7 @@ then
 	cp -r $CMDTOOL"/bin/Release/"{"CommandLineTool.exe","NLog.dll"} $CMDTOOL_DIR
 	mv $CMDTOOL_DIR"/CommandLineTool.exe" $CMDTOOL_DIR"/nlog.exe"
 	cp -r $UNITY"/Assets/"$UNITY $TMP_DIR
+	cp README.md ${TMP_DIR}/README.md
 
 	echo "*** DELETE GARBAGE"
 	find "./"$TMP_DIR -name "*.meta" -type f -delete
