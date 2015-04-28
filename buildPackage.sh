@@ -8,7 +8,7 @@ then
 	TMP_DIR=$BIN_DIR"/tmp"
 
 	NLOG="NLog"
-	CMDTOOL="NLog.CommandLineTool"
+	CMDTOOL=$NLOG".CommandLineTool"
 	CMDTOOL_DIR=$TMP_DIR"/"$CMDTOOL
 
 	xbuild /p:Configuration=Release $CMDTOOL"/"$CMDTOOL.csproj /verbosity:minimal
