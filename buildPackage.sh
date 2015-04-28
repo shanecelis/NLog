@@ -9,6 +9,7 @@ then
 
 	NLOG="NLog"
 	CMDTOOL=$NLOG".CommandLineTool"
+	UNITY=$NLOG".Unity"
 	CMDTOOL_DIR=$TMP_DIR"/"$CMDTOOL
 
 	xbuild /p:Configuration=Release $CMDTOOL"/"$CMDTOOL.csproj /verbosity:minimal
@@ -25,6 +26,7 @@ then
 	cp -r $NLOG"/"$NLOG $TMP_DIR
 	cp -r $CMDTOOL"/bin/Release/"{"CommandLineTool.exe","NLog.dll"} $CMDTOOL_DIR
 	mv $CMDTOOL_DIR"/CommandLineTool.exe" $CMDTOOL_DIR"/nlog.exe"
+	cp -r $UNITY"/Assets/"$UNITY $TMP_DIR
 
 	echo "*** DELETE GARBAGE"
 	find "./"$TMP_DIR -name "*.meta" -type f -delete
