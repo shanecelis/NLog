@@ -10,6 +10,7 @@ namespace NLog.Unity {
         Logger _unityLog;
 
         void Awake() {
+            DontDestroyOnLoad(gameObject);
             LoggerFactory.globalLogLevel = LogLevel.Off;
         }
 
