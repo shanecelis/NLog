@@ -21,6 +21,8 @@ NLog.CommandLineTool | Receive log messages via TCP in your terminal
 NLog.Unity | Integrates NLog into Unity for code free setup
 
 ## Getting started
+
+### LogLevel
 NLog is a very light and flexible logging library. You can log messages based on their importance, e.g. you might want to log general messages with a debug log level, but unexpected messages with a warning log level. NLog provides the following log levels
 - Trace
 - Debug
@@ -29,6 +31,7 @@ NLog is a very light and flexible logging library. You can log messages based on
 - Error
 - Fatal
 
+### Appender
 Its plugin architecture lets you add multiple different appenders to handle log messages. An appender is a delegate method which contains the logic for processing log messages. It might write a message to a file, print it with Console.WriteLine, send it over the network via TCP, etc. You can easily write your own appenders. There are no limits!
 
 NLog ships with a handful pre-made appenders and helper classes
@@ -36,13 +39,15 @@ NLog ships with a handful pre-made appenders and helper classes
 - SOSMaxAppender, which sends messages over the network to [SOSMax](http://www.sos.powerflasher.com)
 - FileWriter
 
+### Commandline Tool
 To receive messages in your terminal, you can use the bundled commandline tool nlog.exe, which you can either setup as a TcpClientSocket or a TcpServerSocket.
 
 ```
-# nlog [-l port]    - listen on port
-# nlog [-c ip port] - connect to ip on port
-# [-v]              - verbose output
-# [-vv]             - even more verbose output
+$ nlog.exe
+nlog [-l port]    - listen on port
+nlog [-c ip port] - connect to ip on port
+[-v]              - verbose output
+[-vv]             - even more verbose output
 
 # This will listen on port 1234
 $ nlog.exe -l 1234
@@ -51,6 +56,7 @@ $ nlog.exe -l 1234
 $ nlog.exe -c 127.0.0.1 1234
 ```
 
+### NLog.Unity
 NLog.Unity adds even more appender. No code needed for setup!
 - ClientSocketAppender
 - ServerSocketAppender
@@ -60,7 +66,10 @@ NLog.Unity adds even more appender. No code needed for setup!
 
 Implementing your appender is as easy as writing a single delegate method.
 
-### Setup NLog
+## Setup NLog
+
+If you're using NLog with Unity, you can skip this section and [jump to 'Setup NLog in Unity'.](#setup-nlog-in-unity)
+
 ```cs
 LoggerFactory.globalLogLevel = LogLevel.On;
 
@@ -81,7 +90,7 @@ LoggerFactory.AddAppender((logger, logLevel, message) => {
 });
 ```
 
-### Example
+## Example
 Send log messages over the network via TCP
 ```cs
 // Setup appender
@@ -106,7 +115,12 @@ public class MyClass {
     static readonly Logger _log = LoggerFactory.GetLogger(typeof(MyClass).Name);
 
     public MyClass() {
-        _log.Debug("It works!");
+        _log.Trace("trace");
+        _log.Debug("debug");
+        _log.Info("info");
+        _log.Warn("warning");
+        _log.Error("error");
+        _log.Fatal("fatal");
     }
 }
 ```
@@ -126,6 +140,17 @@ socket.Connect(IPAddress.Loopback, 4444);
 
 ![SOSMax Output](Readme/SOSMax-Output.png)
 
+# Setup NLog in Unity
+You don't have to write any code to setup NLog in Unity. Just drag the NLog prefab into your scene and you're ready to go.
+
+![NLog Unity](Readme/NLog-Unity.png)
+
+By default, the NLog prefab has already a ClientSocketAppender attached but you can add or remove appenders to fit your requirements. In the image above I also added a FileAppender. The log level set in NLogConfig is applied to all loggers, which makes filtering messages very easy. You can also turn off completely.
+
+![NLog Unity](Readme/NLog-Unity-LogLevel.png)
+
+When checking 'Catch Unity Logs' you can also handle all existing Debug.Log calls and send them via NLog.
+
 # Install NLog
 Each release is published with NLog.zip attached containing all source files you need. It contains
 - NLog
@@ -133,8 +158,6 @@ Each release is published with NLog.zip attached containing all source files you
 - NLog.Unity
 
 [Show releases](https://github.com/sschmid/NLog/releases)
-
-Alternatively you can download [bin/NLog.zip](https://github.com/sschmid/NLog/tree/develop/bin)
 
 # Maintainers(s)
 - [@sschmid](https://github.com/sschmid)
