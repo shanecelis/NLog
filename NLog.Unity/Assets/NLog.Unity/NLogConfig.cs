@@ -2,6 +2,8 @@
 using UnityEngine;
 
 namespace NLog.Unity {
+
+    [DisallowMultipleComponent]
     public class NLogConfig : MonoBehaviour {
         public LogLevel logLevel;
         public bool catchUnityLogs = true;
