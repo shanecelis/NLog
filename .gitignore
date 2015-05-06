@@ -20,3 +20,5 @@ Log.txt
 bin
 !bin/NLog.zip
 
+shadercompiler-64bit*
+ShaderCache

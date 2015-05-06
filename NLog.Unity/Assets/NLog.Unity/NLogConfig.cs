@@ -25,9 +25,14 @@ namespace NLog.Unity {
         void Start() {
             if (catchUnityLogs) {
                 _unityLog = LoggerFactory.GetLogger("Unity");
-                Application.RegisterLogCallback(onLog);
-                Application.RegisterLogCallbackThreaded(onLog);
+                Application.logMessageReceived += onLog;
+                Application.logMessageReceivedThreaded += onLog;
             }
+        }
+
+        void OnDestroy() {
+            Application.logMessageReceived -= onLog;
+            Application.logMessageReceivedThreaded -= onLog;
         }
 
         void onLog(string condition, string stackTrace, LogType type) {
