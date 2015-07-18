@@ -159,5 +159,5 @@ Each release is published with NLog.zip attached containing all source files you
 
 [Show releases](https://github.com/sschmid/NLog/releases)
 
-# Maintainers(s)
+# Maintainer(s)
 - [@sschmid](https://github.com/sschmid)
