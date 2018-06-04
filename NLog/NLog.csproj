@@ -1,60 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B3398605-77E5-4532-8C8F-C90643E6BB7E}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>NLog</RootNamespace>
-    <AssemblyName>NLog</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="NLog\" />
-    <Folder Include="NLog\Appender\" />
-    <Folder Include="NLog\Formatter\" />
-    <Folder Include="NLog\Appender\SocketAppender\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="NLog\Log.cs" />
-    <Compile Include="NLog\Formatter\ColorCodeFormatter.cs" />
-    <Compile Include="NLog\LogLevel.cs" />
-    <Compile Include="NLog\Logger.cs" />
-    <Compile Include="NLog\LoggerFactory.cs" />
-    <Compile Include="NLog\Formatter\DefaultLogMessageFormatter.cs" />
-    <Compile Include="NLog\Appender\FileWriter.cs" />
-    <Compile Include="NLog\Appender\SocketAppender\SocketAppender.cs" />
-    <Compile Include="NLog\Appender\SocketAppender\SocketAppenderBase.cs" />
-    <Compile Include="NLog\Appender\SocketAppender\SOSMaxAppender.cs" />
-    <Compile Include="NLog\Appender\SocketAppender\Networking\AbstractTcpSocket.cs" />
-    <Compile Include="NLog\Appender\SocketAppender\Networking\EventArgs\ReceiveEventArgs.cs" />
-    <Compile Include="NLog\Appender\SocketAppender\Networking\EventArgs\TcpSocketEventArgs.cs" />
-    <Compile Include="NLog\Appender\SocketAppender\Networking\TcpClientSocket.cs" />
-    <Compile Include="NLog\Appender\SocketAppender\Networking\TcpServerSocket.cs" />
-    <Compile Include="NLog\Formatter\TimestampFormatter.cs" />
-  </ItemGroup>
+
 </Project>
